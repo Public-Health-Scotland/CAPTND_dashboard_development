@@ -5,7 +5,6 @@
 library(dplyr)
 library(stringr)
 library(lubridate)
-
 library(forcats)
 library(openxlsx)
 library(tidyr)
@@ -13,6 +12,9 @@ library(arrow)
 library(shiny)
 library(plotly)
 library(DT)
+library(shinydashboard)
+conflicted::conflicts_prefer(shinydashboard::box)
+conflicted::conflicts_prefer(dplyr::filter)
 
 # Constants  - NEED TO MAKE THIS A USER INPUT
 month_end = ymd(readline(prompt = 'Please enter latest reporting month (end of last quarter) (YYYY-MM-DD format): '))
@@ -64,16 +66,26 @@ source_captnd("02_setup/set_dir_structure.R",                      local = globa
 source_captnd("07_publication/script/chapters/2_load_functions.R", local = globalenv())
 source_captnd("07_publication/script/chapters/3_set_constants.R",  local = globalenv())
 
-# Do we need this???
-source("//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/Ideas Space/create_captnd_dashboard_dt.R")
+#load data
+source("//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_data/create_captnd_dashboard_dt.R")
+#load graph functions
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_line_graph_function.R")
+#load text inputs
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/pt_sex_ref_reactive_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/text_chunks.R")
+#render .Rmd file for text in 'Home' tab 
+rmarkdown::render("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/captnd_dashboard_intro.Rmd",
+                  output_format = "html_fragment", 
+                  output_file = "/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/captnd_dashboard_intro.html")
 
 
-# Default UI values (from ref_master_df)
+# Default UI values 
 default_dataset <- unique(ref_master_df$dataset_type)[1]
-default_hb      <- unique(ref_master_df$hb_name)[1]
-default_measure <- unique(ref_master_df$measure_name)[1]
-default_choices  <- unique(ref_master_df$measure_breakdown)
-default_selected <- head(default_choices, 2)
+default_hb <- 'NHSScotland'
+default_measure <- ref_master_df %>% filter(dataset_type == default_dataset, hb_name == default_hb) %>% pull(measure_name) %>% unique() %>% first()
+default_quarter <- ref_master_df %>% filter(dataset_type == 'PT') %>% pull(quarter_ending) %>% max()
+# default_choices  <- unique(ref_master_df$measure_breakdown)
+# default_selected <- head(default_choices, 2)
 
 message("global.R loaded successfully...!!!.")
 # ============================================================
