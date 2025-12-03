@@ -1,0 +1,150 @@
+---
+title: "captnd_dashboard_intro"
+author: "Luke Taylor"
+date: "2025-11-21"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+
+# Psychological Therapies
+
+knitr::opts_chunk$set(echo = FALSE, dpi = 300)
+library(ggplot2)
+library(scales)
+library(flextable)
+library(officer)
+library(magrittr)
+library(arrow)
+library(tidyverse)
+
+# define dataset selector variable
+dataset_choice <- "PT"
+month_end <- "2025-09-01"
+dataset_type_o <- "dataset_type"
+hb_name_o <- "hb_name"
+
+
+# source data for tables and inline values
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/CAPTND/07_publication/script/functions/source_data_for_markdown.R", local = knitr::knit_global())
+```
+
+# Introduction
+
+This publication of statistics in development presents information relating to 
+activity in Psychological Therapies (PT) and Child and Adolescent Mental Health 
+Services (CAMHS) from the Child, Adolescent, and Psychological Therapies National Dataset (CAPTND).
+Data is presented at NHS board and Scotland-level. In this publication, ‘Scotland-level’ 
+refers to the aggregated regional NHS board figures that are available in CAPTND.  
+
+CAPTND is a dataset in development that collates information for mental health 
+services at patient-level and records each individual’s journey through the service. 
+CAPTND data are still under development therefore any inferences or 
+conclusions from this analysis must be treated with caution, and should not be compared 
+to the official aggregate collection and waiting time for [PT](https://publichealthscotland.scot/publications/psychological-therapies-waiting-times/psychological-therapies-waiting-times-quarter-ending-march-2025/) and [CAMHS](https://publichealthscotland.scot/publications/child-and-adolescent-mental-health-services-camhs-waiting-times/child-and-adolescent-mental-health-services-camhs-waiting-times-quarter-ending-march-2025/).  
+
+This report relates to the period `r date_label_5qt` to `r date_label`.  
+
+## Data Quality
+
+Good quality data are crucial for accuracy and interpretation, and Public Health 
+Scotland is working with all NHS boards to implement robust data collection for 
+CAPTND. Some data items, namely ‘UCPN’, ‘UPI’, and ‘CHI’, are required to create 
+a unique and complete care pathway for an individual within CAPTND (see 
+[Variables Reported](#variables-reported) section below). For records where these
+key variables are not available the pathway cannot be created accurately and
+cannot, therefore, be used in CAPTND analysis. A comparison of referral counts before
+and after pathway creation can be found in the accompanying [data quality documents](https://publichealthscotland.scot/publications/child-adolescent-and-psychological-therapies-national-dataset-captnd/psychological-therapies-in-child-adolescent-and-psychological-therapies-national-dataset-2-september-2025/) 
+
+Data returns for CAPTND began in June 2019, and following extensive data quality 
+checking and collaboration with NHS boards data quality improved sufficiently by 
+January 2020 to enable initial and limited reporting to commence.
+Improving data quality in CAPTND is an ongoing process, meaning data from previous
+quarters may not be comparable to the current reporting period.   
+
+As the development of CAPTND progresses, greater detail on individuals’ journeys 
+within PT and CAMHS will be reported.
+
+## Variables Reported
+
+See the [Glossary](#glossary) for definitions of terminology and derived values.  
+
+<Div custom-style = "Bullet 1"> 
+**Unique Care Pathway Number (UCPN):** An  identifier allocated to new referrals 
+to a consultant-led, nurse-led, or other service, to enable identification of
+patient pathways. These are only unique *within* NHS boards. 
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Community Health Index (CHI):** The [Community 
+Health Index (CHI)](https://www.datadictionary.nhs.uk/attributes/community_health_index_number.html)
+is a population register, which is used in Scotland for health care purposes. 
+The CHI number uniquely identifies a person on the index, the first six digits 
+of the CHI number relate to the person's date of birth (DD MM YY).
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Unique Patient Identifier (UPI):** The UPI is a locally-generated code used to
+uniquely identify a patient in cases where the CHI number is not available.
+</Div>
+ 
+<Div custom-style = "Bullet 1"> 
+**Sex:** Biological sex as recorded at birth. 'Not known' refers to indeterminate
+sex at birth, including intersex. The use of 'Not specified' refers to instances
+where the information is not available.
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Age group:** Age in years is calculated at the point of referral from reported date 
+of birth. When date of birth is not reported, the first six digits of the CHI 
+number are used. Age is then grouped into 5-year age categories for reporting purposes.
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**SIMD quintile:** [Scottish Index of Multiple Deprivation (SIMD)](https://www.gov.scot/collections/scottish-index-of-multiple-deprivation-2020/) 
+is a postcode-derived measure of relative deprivation. If an area is identified as 
+‘deprived’, this can relate to residents having a low income, but it can also 
+mean fewer resources or opportunities. SIMD looks at the extent to which an area 
+is deprived across seven domains: income, employment, education, health, access 
+to services, crime and housing. Residence in a deprived postcode area does not 
+necessarily mean an individual themselves experiences deprivation. Not all patients 
+are treated in their NHS board of residence. Please note that NHS board areas may
+not have all five quintiles represented.
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Referral received date / Referral date:** The date on which a health or social 
+care service receives a referral. If this cannot be provided, ‘Referral date’ is 
+used instead as these dates are often very similar. If neither of these fields are
+provided the individual’s record cannot be counted as it cannot be placed within 
+the time frame reported.
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Referral accepted:** A categorical variable stating whether an individual's
+referral has been accepted, not accepted, decision pending, or the information is missing.
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Referral non-acceptance reason:** The reason why a referral was not accepted 
+by the service provider. 
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Referral non-acceptance action:** The action taken following an initial referral 
+not being accepted into the service. Please note that these are data under development
+and may not be recorded in all NHS boards.
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Appointment date:** The date on which an appointment occurred or was planned 
+to occur. The first appointment date in an individual's pathway is referred to 
+as the **first contact appointment.**
+</Div>
+
+<Div custom-style = "Bullet 1"> 
+**Appointment attendance status:** Indicates whether the patient attended their 
+appointment and provides context for non-attendance. This is used to calculate
+Did Not Attend (DNA) rates.
+</Div>
+
