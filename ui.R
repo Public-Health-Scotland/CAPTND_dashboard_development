@@ -40,6 +40,20 @@ ui <- dashboardPage(
   ),
   
   dashboardBody(
+    # Logo (fixed, top-right)
+    tags$img(
+      src = "phs-logo.png",  # must match file name in www/ ??
+      id  = "phs-logo",
+      alt = "Public Health Scotland"
+    ),
+    
+    # Load custom CSS
+    tags$head(
+      tags$link(rel = "stylesheet",
+                type = "text/css",
+                href = "custom.css")
+    ),
+    
     tabItems(
       # Home Tab
       tabItem(tabName = "home",
