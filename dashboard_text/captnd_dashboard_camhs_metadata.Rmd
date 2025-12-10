@@ -1,0 +1,174 @@
+---
+title: "captnd_dashboard_camhs_metadata"
+author: "Luke Taylor"
+date: "2025-11-21"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+
+# CAMHS
+
+knitr::opts_chunk$set(echo = FALSE, dpi = 300)
+library(ggplot2)
+library(scales)
+library(flextable)
+library(officer)
+library(magrittr)
+library(arrow)
+library(tidyverse)
+
+# define dataset selector variable
+dataset_choice <- "CAMHS"
+month_end <- "2025-09-01"
+dataset_type_o <- "dataset_type"
+hb_name_o <- "hb_name"
+
+
+# source data for tables and inline values
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/CAPTND/07_publication/script/functions/source_data_for_markdown.R", local = knitr::knit_global())
+```
+
+## Appendix 1 - Background information
+
+In 2019, an official letter was shared with all NHS Chief Executives and Chief
+Officers. This letter stated that the focus on Mental Health (MH) continues to grow.
+This brings with it increased demand for services, and a need for a robust evidence
+base to support health boards and integrated joint boards (IJBs), where children’s
+services are integrated, in effective planning and monitoring.  
+
+One key component of the evidence base is the information health boards gather on adults,
+children and young people who receive treatment through CAMHS or PT services. In
+order to improve these data, the Scottish Government commissioned ISD (now PHS) to
+work with Boards to develop an individual level core dataset (CAPTND).
+CAPTND data are still at an experimental stage therefore any inferences or
+conclusions from this analysis must be treated with caution.  
+
+## Appendix 2 - Publication metadata
+
+**Publication title**  
+Child, Adolescent, and Psychological Therapies National Dataset (CAPTND):  
+Child and Adolescent Mental Health services (CAMHS) Report (`r date_label_5qt` - `r date_label`)
+
+**Description**  
+Activity in Child and Adolescent Mental Health services (CAMHS)
+recorded in the Child, Adolescent, and Psychological Therapies National Dataset
+(CAPTND), at NHS Board and Scotland-level.
+
+**Theme**  
+Health and Social Care
+
+**Topic**  
+Mental health
+
+**Format**  
+Word document
+
+**Data source(s)**  
+Child, Adolescent, and Psychological Therapies National Dataset (CAPTND), 
+Scottish Index of Multiple Deprivation (SIMD)
+
+**Date that data are acquired**  
+`r format(as.Date(data_analysis_latest_date), format = "%dth of %B %Y")`
+
+**Release date**  
+`r pub_date`
+
+**Frequency**  
+6 months
+
+**Timeframe of data and timeliness**  
+Data from `r date_label_5qt` to `r date_label`. Biannual release.
+
+**Continuity of data**  
+Information has been collected nationally since June 2019.
+
+**Concepts and definitions**  
+See the glossary and variables used sections of the report.
+
+**Relevance and key uses of the statistics**  
+Data offer detail around individuals accessing mental health services in Scotland.
+However, data are still in development so uses are limited given inferences must be
+made with caution.
+
+**Accuracy**  
+Data are still in development. Data quality investigations to improve accuracy are
+ongoing.
+
+**Completeness**  
+Data are still in development and many data items in the dataset cannot be provided.
+In some cases, missing data items can be inferred from other variables relating
+to the same individual - e.g. date of birth can be gleaned from the CHI number -
+which has been used where appropriate to achieve maximum completeness of data.
+
+**Comparability**  
+Comparisons are discouraged. There will be differences in the measures used and
+collection methods compared with CAMHS waiting times statistics, as
+well as differences in service structures between the administrations. Users must
+carefully read the publications.
+
+**Accessibility**  
+It is the policy of Public Health Scotland to make its web sites and products
+accessible according to published guidelines. More information on accessibility
+can be found on the [PHS website](https://publichealthscotland.scot/accessibility/).
+
+**Value type and unit of measurement**  
+Number and percentage of patients referred by NHS Board.
+
+**Disclosure**  
+The PHS protocol on Statistical Disclosure Protocol is followed.
+
+**Official statistics accreditation**  
+Official statistics in development
+
+**Last published**  
+`r prev_pub_date`
+
+**Next published**  
+`r next_pub_date`
+
+**Date of first publication**  
+1st of June 2021
+
+**Help email**  
+[phs.captnd@phs.scot](mailto:phs.captnd@phs.scot)
+<br>
+
+**Date form completed**  
+`r format(Sys.time(), "%dth of %B %Y")`
+
+## Appendix 3 - Early access details
+
+### Pre-release access
+
+Under terms of the 'Pre-release Access to Official Statistics (Scotland) Order 2008',
+PHS is obliged to publish information on those receiving pre-release access ('pre-release
+access' refers to statistics in their final form prior to publication). The standard
+maximum pre-release access is five working days. Shown below are details of those
+receiving standard pre-release access.
+
+### Standard pre-release access:
+
+Scottish Government Department of Health and Social Care (DHSC)  
+NHS board chief executives  
+NHS board communication leads  
+
+### Early access for quality assurance
+
+These statistics will also have been made available to those who needed access to
+help quality assure the publication:
+
+## Appendix 4 – PHS and official statistics
+
+### About Public Health Scotland (PHS)
+
+PHS is a knowledge-based and intelligence driven organisation with a critical
+reliance on data and information to enable it to be an independent voice for the
+public's health, leading collaboratively and effectively across the Scottish public
+health system, accountable at local and national levels, and providing leadership
+and focus for achieving better health and wellbeing outcomes for the population.
+Our statistics comply with the [Code of Practice for Statistics](https://www.statisticsauthority.gov.uk/code-of-practice/the-code/)
+in terms of trustworthiness, high quality and public value. This also means that
+we keep data secure at all stages, through collection, processing, analysis and
+output production, and adhere to the Office for National Statistics '[Five Safes](https://blog.ons.gov.uk/2017/01/27/the-five-safes-data-privacy-at-ons/)'
+of data privacy.

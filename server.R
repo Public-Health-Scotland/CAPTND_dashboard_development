@@ -304,46 +304,56 @@ server <- function(input, output, session) {
   
   #PT referrals by SIMD plot
   output$ref_simd_plot_pt <- renderPlotly({
+    
     data <- filtered_ref_data_simd_pt() |>
       filter(measure_name == 'Referrals by SIMD')
-    req(nrow(data) > 0)  # Prevent plotting if no data
-    data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
     
-    p <- ggplot(data, aes(x = measure_breakdown, y = count, fill = measure_breakdown,
-                          text  = paste("<b>PT Referrals<b>",
-                                        "<br>Quarter ending: ", quarter_ending,
-                                        "<br>SIMD Quintile: ", measure_breakdown,
-                                        paste0("<br>", input$pt_measure_type_simd, ": "), count))) +
-      geom_bar(stat = "identity") +
-      scale_fill_manual(values = demo_palette, breaks = levels(data$measure_breakdown)) +
-      labs(x = "SIMD Quintile", y = input$pt_measure_type_simd, fill = "SIMD Quintile") +
-      theme_captnd() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      expand_limits(y = 0)
+    create_bar_graph(data, input$pt_measure_type_simd, demo_palette, quarters_in_data,
+                      label_name = "SIMD Quintile", label_title = "PT Referrals")
     
-    ggplotly(p, tooltip = "text")
+    # req(nrow(data) > 0)  # Prevent plotting if no data
+    # data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
+    # 
+    # p <- ggplot(data, aes(x = measure_breakdown, y = count, fill = measure_breakdown,
+    #                       text  = paste("<b>PT Referrals<b>",
+    #                                     "<br>Quarter ending: ", quarter_ending,
+    #                                     "<br>SIMD Quintile: ", measure_breakdown,
+    #                                     paste0("<br>", input$pt_measure_type_simd, ": "), count))) +
+    #   geom_bar(stat = "identity") +
+    #   scale_fill_manual(values = demo_palette, breaks = levels(data$measure_breakdown)) +
+    #   labs(x = "SIMD Quintile", y = input$pt_measure_type_simd, fill = "SIMD Quintile") +
+    #   theme_captnd() +
+    #   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    #   expand_limits(y = 0)
+    # 
+    # ggplotly(p, tooltip = "text")
   })
   
   #CAMHS referrals by SIMD plot
   output$ref_simd_plot_camhs <- renderPlotly({
+    
     data <- filtered_ref_data_simd_camhs() |>
       filter(measure_name == 'Referrals by SIMD')
-    req(nrow(data) > 0)  # Prevent plotting if no data
-    data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
     
-    p <- ggplot(data, aes(x = measure_breakdown, y = count, fill = measure_breakdown,
-                          text  = paste("<b>CAMHS Referrals<b>",
-                                        "<br>Quarter ending: ", quarter_ending,
-                                        "<br>SIMD Quintile: ", measure_breakdown,
-                                        paste0("<br>", input$camhs_measure_type_simd, ": "), count))) +
-      geom_bar(stat = "identity") +
-      scale_fill_manual(values = demo_palette, breaks = levels(data$measure_breakdown)) +
-      labs(x = "SIMD Quintile", y = input$camhs_measure_type_simd, fill = "SIMD Quintile") +
-      theme_captnd() +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-      expand_limits(y = 0)
+    create_bar_graph(data, input$camhs_measure_type_simd, demo_palette, quarters_in_data,
+                     label_name = "SIMD Quintile", label_title = "CAMHS Referrals")
     
-    ggplotly(p, tooltip = "text")
+    # req(nrow(data) > 0)  # Prevent plotting if no data
+    # data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
+    # 
+    # p <- ggplot(data, aes(x = measure_breakdown, y = count, fill = measure_breakdown,
+    #                       text  = paste("<b>CAMHS Referrals<b>",
+    #                                     "<br>Quarter ending: ", quarter_ending,
+    #                                     "<br>SIMD Quintile: ", measure_breakdown,
+    #                                     paste0("<br>", input$camhs_measure_type_simd, ": "), count))) +
+    #   geom_bar(stat = "identity") +
+    #   scale_fill_manual(values = demo_palette, breaks = levels(data$measure_breakdown)) +
+    #   labs(x = "SIMD Quintile", y = input$camhs_measure_type_simd, fill = "SIMD Quintile") +
+    #   theme_captnd() +
+    #   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    #   expand_limits(y = 0)
+    # 
+    # ggplotly(p, tooltip = "text")
   })
   
   #PT referral acceptance plot
