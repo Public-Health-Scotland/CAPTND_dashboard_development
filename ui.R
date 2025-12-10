@@ -29,7 +29,13 @@ ui <- dashboardPage(
                                   menuSubItem("Total Appointments", tabName = "camhs_appts"),
                                   menuSubItem("First Contact Appointments", tabName = "camhs_first_appts"))
                 ),
-                menuItem("Metadata", tabName = "metadata", icon = icon("database"))
+                
+                menuItem("Glossary", tabName = "glossary", icon = icon("book")),
+                
+                menuItem("Metadata", tabName = "metadata", icon = icon("database"),
+                         menuSubItem("PT Appendices", tabName = "metadata_pt"),
+                         menuSubItem("CAMHS Appendices", tabName = "metadata_camhs"))
+                
     )
   ),
   
@@ -201,9 +207,20 @@ ui <- dashboardPage(
               )
       ),
       
+      #Glossary Tab
+      tabItem(tabName = "glossary",
+              h2("Glossary"),
+              includeHTML("captnd_dashboard_glossary.html")),
+      
       # Metadata Tab
-      tabItem(tabName = "metadata",
-              h2("Metadata Information")
+      tabItem(tabName = "metadata_pt",
+              h2("PT Appendices"),
+              includeHTML("captnd_dashboard_pt_metadata.html")),
+      
+      tabItem(tabName = "metadata_camhs",
+              h2("CAMHS Appendices"),
+              includeHTML("captnd_dashboard_camhs_metadata.html")
+              
       )
     )
   )
