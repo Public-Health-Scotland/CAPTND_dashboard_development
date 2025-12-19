@@ -101,8 +101,6 @@ default_dataset <- unique(ref_master_df$dataset_type)[1]
 default_hb <- 'NHSScotland'
 default_measure <- ref_master_df %>% filter(dataset_type == default_dataset, hb_name == default_hb) %>% pull(measure_name) %>% unique() %>% first()
 default_quarter <- ref_master_df %>% filter(dataset_type == 'PT') %>% pull(quarter_ending) %>% max()
-# default_choices  <- unique(ref_master_df$measure_breakdown)
-# default_selected <- head(default_choices, 2)
 
 message("global.R loaded successfully...!!!.")
 # ============================================================

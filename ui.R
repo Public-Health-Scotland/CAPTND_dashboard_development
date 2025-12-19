@@ -57,7 +57,7 @@ ui <- dashboardPage(
     tabItems(
       # Home Tab
       tabItem(tabName = "home",
-              h2("Welcome to Child, Adolescent, and Psychological Therapies National Dataset (CAPTND) Dashboard"),
+              h2("Welcome to the Child, Adolescent, and Psychological Therapies National Dataset (CAPTND) Dashboard"),
               includeHTML("captnd_dashboard_intro.html")
       ),
       
@@ -139,7 +139,56 @@ ui <- dashboardPage(
                     radioButtons("pt_measure_type_att", "Select measurement type:", 
                                  choices = unique(master_appts_df$measure_type),
                                  selected = unique(master_appts_df$measure_type)[1]),
-                    plotlyOutput("appt_att_plot_pt", height = "400px"))
+                    plotlyOutput("appt_att_plot_pt", height = "400px")),
+                fluidRow(
+                  box(title = "PT appointment by location", width = 12, 
+                      status = "info", solidHeader = TRUE,
+                      p("This chart shows the location of appointments for the selected health board."),
+                      actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                      selectInput("pt_health_board_loc", "Select health board:", 
+                                  choices = unique(master_loc_prof_df$hb_name),
+                                  selected = default_hb),
+                      selectInput("pt_quarter_loc", "Select quarter:",
+                                  choices = unique(master_loc_prof_df$app_quarter_ending),
+                                  selected = default_quarter),
+                      radioButtons("pt_measure_type_loc", "Select measurement type:", 
+                                   choices = unique(master_loc_prof_df$measure_type),
+                                   selected = unique(master_loc_prof_df$measure_type)[1]),
+                      plotlyOutput("appt_loc_plot_pt", height = "400px")),
+                  fluidRow(
+                    box(title = "PT appointment by professional group", width = 12, 
+                        status = "info", solidHeader = TRUE,
+                        p("This chart shows appointments by professional group for the selected health board."),
+                        actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                        selectInput("pt_health_board_prof", "Select health board:", 
+                                    choices = unique(master_loc_prof_df$hb_name),
+                                    selected = default_hb),
+                        selectInput("pt_quarter_prof", "Select quarter:",
+                                    choices = unique(master_loc_prof_df$app_quarter_ending),
+                                    selected = default_quarter),
+                        radioButtons("pt_measure_type_prof", "Select measurement type:", 
+                                     choices = unique(master_loc_prof_df$measure_type),
+                                     selected = unique(master_loc_prof_df$measure_type)[1]),
+                        plotlyOutput("appt_prof_plot_pt", height = "400px"))
+                  )
+                )
+              )
+      ),
+      #PT First Appointment Tab
+      tabItem(tabName = "pt_first_appts",
+              
+              fluidRow(
+                box(title = "PT first contact appointment attendance", width = 12, 
+                    status = "info", solidHeader = TRUE,
+                    p("This chart shows the attendance status of first contact appointments for the selected health board."),
+                    actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                    selectInput("pt_health_board_first_appt", "Select health board:", 
+                                choices = unique(master_appts_df$hb_name),
+                                selected = default_hb),
+                    radioButtons("pt_measure_type_first_appt", "Select measurement type:", 
+                                 choices = unique(master_appts_df$measure_type),
+                                 selected = unique(master_appts_df$measure_type)[1]),
+                    plotlyOutput("first_appt_plot_pt", height = "400px"))
               )
       ),
       
@@ -199,7 +248,20 @@ ui <- dashboardPage(
                     radioButtons("camhs_measure_type_accept", "Select measurement type:", 
                                  choices = unique(ref_accept_df$measure_type),
                                  selected = unique(ref_accept_df$measure_type)[1]),
-                    plotlyOutput("ref_accept_plot_camhs", height = "400px"))
+                    plotlyOutput("ref_accept_plot_camhs", height = "400px")),
+                fluidRow(
+                  box(title = "CAMHS appointment by location", width = 12, 
+                      status = "info", solidHeader = TRUE,
+                      p("This chart shows the location of appointments for the selected health board."),
+                      actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                      selectInput("camhs_health_board_loc", "Select health board:", 
+                                  choices = unique(master_loc_prof_df$hb_name),
+                                  selected = default_hb),
+                      radioButtons("camhs_measure_type_loc", "Select measurement type:", 
+                                   choices = unique(master_loc_prof_df$measure_type),
+                                   selected = unique(master_loc_prof_df$measure_type)[1]),
+                      plotlyOutput("appt_loc_plot_camhs", height = "400px"))
+                )
               )
       ),
       
@@ -217,7 +279,41 @@ ui <- dashboardPage(
                     radioButtons("camhs_measure_type_att", "Select measurement type:", 
                                  choices = unique(master_appts_df$measure_type),
                                  selected = unique(master_appts_df$measure_type)[1]),
-                    plotlyOutput("appt_att_plot_camhs", height = "400px"))
+                    plotlyOutput("appt_att_plot_camhs", height = "400px")),
+                fluidRow(
+                  box(title = "CAMHS appointment by location", width = 12, 
+                      status = "info", solidHeader = TRUE,
+                      p("This chart shows the location of appointments for the selected health board."),
+                      actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                      selectInput("camhs_health_board_loc", "Select health board:", 
+                                  choices = unique(master_loc_prof_df$hb_name),
+                                  selected = default_hb),
+                      selectInput("camhs_quarter_loc", "Select quarter:",
+                                  choices = unique(master_loc_prof_df$app_quarter_ending),
+                                  selected = default_quarter),
+                      radioButtons("pt_measure_type_loc", "Select measurement type:", 
+                                   choices = unique(master_loc_prof_df$measure_type),
+                                   selected = unique(master_loc_prof_df$measure_type)[1]),
+                      plotlyOutput("appt_loc_plot_camhs", height = "400px"))
+                )
+              )
+      ),
+      
+      #CAMHS First Appointment Tab
+      tabItem(tabName = "camhs_first_appts",
+              
+              fluidRow(
+                box(title = "CAMHS first contact appointment attendance", width = 12, 
+                    status = "info", solidHeader = TRUE,
+                    p("This chart shows the attendance status of first contact appointments for the selected health board."),
+                    actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                    selectInput("camhs_health_board_first_appt", "Select health board:", 
+                                choices = unique(master_appts_df$hb_name),
+                                selected = default_hb),
+                    radioButtons("camhs_measure_type_first_appt", "Select measurement type:", 
+                                 choices = unique(master_appts_df$measure_type),
+                                 selected = unique(master_appts_df$measure_type)[1]),
+                    plotlyOutput("first_appt_plot_camhs", height = "400px"))
               )
       ),
       
