@@ -130,6 +130,58 @@ server <- function(input, output, session) {
     
   })
   
+  #PT appt location/professional group tab radio buttons
+  observeEvent(input$tabs, {
+    
+    updateSelectInput(
+      session,
+      inputId = "health_board_pt",
+      choices = unique(master_loc_prof_df$hb_name),
+      selected = unique(master_loc_prof_df$hb_name)[1]
+    )
+    
+    updateSelectInput(
+      session,
+      inputId = "quarter_ending_pt",
+      choices = unique(master_loc_prof_df$app_quarter_ending),
+      selected = unique(master_loc_prof_df$app_quarter_ending)[1]
+    )
+    
+    updateRadioButtons(
+      session,
+      inputId = "pt_measure",
+      choices = unique(master_loc_prof_df$measure_type),
+      selected = unique(master_loc_prof_df$measure_type)[1]
+    )
+    
+  })
+  
+  #CAMHS appt location/professional group tab radio buttons
+  observeEvent(input$tabs, {
+    
+    updateSelectInput(
+      session,
+      inputId = "health_board_camhs",
+      choices = unique(master_loc_prof_df$hb_name),
+      selected = unique(master_loc_prof_df$hb_name)[1]
+    )
+    
+    updateSelectInput(
+      session,
+      inputId = "quarter_ending_camhs",
+      choices = unique(master_loc_prof_df$app_quarter_ending),
+      selected = unique(master_loc_prof_df$app_quarter_ending)[1]
+    )
+    
+    updateRadioButtons(
+      session,
+      inputId = "measure_type_camhs",
+      choices = unique(master_loc_prof_df$measure_type),
+      selected = unique(master_loc_prof_df$measure_type)[1]
+    )
+    
+  })
+  
   #Using this plot button
   observeEvent(input$info_btn, {
     showModal(modalDialog(
@@ -237,12 +289,42 @@ server <- function(input, output, session) {
   })
   
   ####PT Appointments####
+  ## All appointments ##
   filtered_app_att_data_pt <- reactive({
     req(input$pt_health_board_att, input$pt_measure_type_att)
     master_appts_df %>%
       filter(dataset_type == "PT",
              hb_name == input$pt_health_board_att,
              measure_type == input$pt_measure_type_att)
+  })
+  
+  ## Appt location ##
+  filtered_app_loc_data_pt <- reactive({
+    req(input$pt_health_board_loc, input$pt_quarter_loc, input$pt_measure_type_loc)
+    master_loc_prof_df %>%
+      filter(dataset_type == "PT",
+             hb_name == input$pt_health_board_loc,
+             app_quarter_ending == input$pt_quarter_loc,
+             measure_type == input$pt_measure_type_loc)
+  })
+  
+  ## Prof group ##
+  filtered_app_prof_data_pt <- reactive({
+    req(input$pt_health_board_prof, input$pt_quarter_prof, input$pt_measure_type_prof)
+    master_loc_prof_df %>%
+      filter(dataset_type == "PT",
+             hb_name == input$pt_health_board_prof,
+             app_quarter_ending == input$pt_quarter_prof,
+             measure_type == input$pt_measure_type_prof)
+  })
+  
+  ## First contact ##
+  filtered_first_appt_data_pt <- reactive({
+    req(input$pt_health_board_first_appt, input$pt_measure_type_first_appt)
+    master_appts_df %>%
+      filter(dataset_type == "PT",
+             hb_name == input$pt_health_board_first_appt,
+             measure_type == input$pt_measure_type_first_appt)
   })
   
   ####CAMHS Appointments####
@@ -252,6 +334,35 @@ server <- function(input, output, session) {
       filter(dataset_type == "CAMHS",
              hb_name == input$camhs_health_board_att,
              measure_type == input$camhs_measure_type_att)
+  })
+  
+  ## Appt location ##
+  filtered_app_loc_data_camhs <- reactive({
+    req(input$camhs_health_board_loc, input$camhs_quarter_loc, input$camhs_measure_type_loc)
+    master_loc_prof_df %>%
+      filter(dataset_type == "CAMHS",
+             hb_name == input$camhs_health_board_loc,
+             app_quarter_ending == input$camhs_quarter_loc,
+             measure_type == input$camhs_measure_type_loc)
+  })
+  
+  ## Prof group ##
+  filtered_app_prof_data_camhs <- reactive({
+    req(input$camhs_health_board_prof, input$camhs_quarter_prof, input$camhs_measure_type_prof)
+    master_loc_prof_df %>%
+      filter(dataset_type == "CAMHS",
+             hb_name == input$camhs_health_board_prof,
+             app_quarter_ending == input$camhs_quarter_prof,
+             measure_type == input$camhs_measure_type_prof)
+  })
+  
+  ## First contact ##
+  filtered_first_appt_data_camhs <- reactive({
+    req(input$camhs_health_board_first_appt, input$camhs_measure_type_first_appt)
+    master_appts_df %>%
+      filter(dataset_type == "CAMHS",
+             hb_name == input$camhs_health_board_first_appt,
+             measure_type == input$camhs_measure_type_first_appt)
   })
   
   
@@ -311,22 +422,6 @@ server <- function(input, output, session) {
     create_bar_graph(data, input$pt_measure_type_simd, demo_palette, quarters_in_data,
                       label_name = "SIMD Quintile", label_title = "PT Referrals")
     
-    # req(nrow(data) > 0)  # Prevent plotting if no data
-    # data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
-    # 
-    # p <- ggplot(data, aes(x = measure_breakdown, y = count, fill = measure_breakdown,
-    #                       text  = paste("<b>PT Referrals<b>",
-    #                                     "<br>Quarter ending: ", quarter_ending,
-    #                                     "<br>SIMD Quintile: ", measure_breakdown,
-    #                                     paste0("<br>", input$pt_measure_type_simd, ": "), count))) +
-    #   geom_bar(stat = "identity") +
-    #   scale_fill_manual(values = demo_palette, breaks = levels(data$measure_breakdown)) +
-    #   labs(x = "SIMD Quintile", y = input$pt_measure_type_simd, fill = "SIMD Quintile") +
-    #   theme_captnd() +
-    #   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    #   expand_limits(y = 0)
-    # 
-    # ggplotly(p, tooltip = "text")
   })
   
   #CAMHS referrals by SIMD plot
@@ -338,22 +433,6 @@ server <- function(input, output, session) {
     create_bar_graph(data, input$camhs_measure_type_simd, demo_palette, quarters_in_data,
                      label_name = "SIMD Quintile", label_title = "CAMHS Referrals")
     
-    # req(nrow(data) > 0)  # Prevent plotting if no data
-    # data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
-    # 
-    # p <- ggplot(data, aes(x = measure_breakdown, y = count, fill = measure_breakdown,
-    #                       text  = paste("<b>CAMHS Referrals<b>",
-    #                                     "<br>Quarter ending: ", quarter_ending,
-    #                                     "<br>SIMD Quintile: ", measure_breakdown,
-    #                                     paste0("<br>", input$camhs_measure_type_simd, ": "), count))) +
-    #   geom_bar(stat = "identity") +
-    #   scale_fill_manual(values = demo_palette, breaks = levels(data$measure_breakdown)) +
-    #   labs(x = "SIMD Quintile", y = input$camhs_measure_type_simd, fill = "SIMD Quintile") +
-    #   theme_captnd() +
-    #   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    #   expand_limits(y = 0)
-    # 
-    # ggplotly(p, tooltip = "text")
   })
   
   #PT referral acceptance plot
@@ -391,7 +470,7 @@ server <- function(input, output, session) {
   })
   
   
-  #CAMHS appointment attendance plot
+  #CAMHS appointments attendance plot
   output$appt_att_plot_camhs <- renderPlotly({
     
     data <- filtered_app_att_data_camhs() |>
@@ -399,6 +478,111 @@ server <- function(input, output, session) {
     
     create_line_graph(data, input$camhs_measure_type_att, appt_att_palette, quarters_in_data,
                       label_name = "Attendance status", label_title = "CAMHS Appointment Attendance")
+    
+  })
+  
+  #PT first contact attendance plot
+  output$first_appt_plot_pt <- renderPlotly({
+    
+    data <- filtered_first_appt_data_pt() |>
+      filter(measure_name == 'First contact attendances')
+    
+    create_line_graph(data, input$pt_measure_type_first_att, appt_att_palette, quarters_in_data,
+                      label_name = "Attendance status", label_title = "PT First Contact Attendance")
+    
+  })
+  
+  #CAMHS first contact attendance plot
+  output$first_appt_plot_camhs <- renderPlotly({
+    
+    data <- filtered_first_appt_data_camhs() |>
+      filter(measure_name == 'First contact attendances')
+    
+    create_line_graph(data, input$camhs_measure_type_first_att, appt_att_palette, quarters_in_data,
+                      label_name = "Attendance status", label_title = "CAMHS First Contact Attendance")
+    
+  })
+  
+  #PT appointment location
+  
+  output$appt_loc_plot_pt <- renderPlotly({
+    
+  data <- filtered_app_loc_data_pt() |>
+    filter(measure_name == 'Appointment care location')
+  
+  create_horz_bar_graph(data, input$pt_measure_type_loc, label_name = "Appt location", 
+                        label_title = "PT Care Contact Location", xaxis_name = "Care contact location") 
+  
+  })
+  
+  # output$appt_loc_plot_pt <- renderPlotly({
+  # 
+  #   data <- filtered_app_loc_data_pt() |>
+  #     filter(measure_name == 'Appointment care location')
+  #   
+  #    label_order <- data$measure_breakdown
+  #    ifelse(any(label_order == "Not known"),
+  #           label_order <- c(label_order[-which(label_order == "Not known")], "Not known"), "") # put not known and missing to the bottom of the plot
+  #    ifelse(any(label_order == "Missing data"),
+  #           label_order <- c(label_order[-which(label_order == "Missing data")], "Missing data"), "")
+  #    
+  #   req(nrow(data) > 0)
+  #   
+  #   p <- data |>
+  #     mutate(measure_breakdown = factor(measure_breakdown, levels = label_order)) |>
+  #     ggplot(aes(
+  #     x = fct_rev(measure_breakdown),
+  #     y = count,
+  #     text = paste(
+  #       paste0("<b> PT Care Contact Location <b>"), #label_title
+  #       "<br>Quarter ending: ", app_quarter_ending,
+  #       paste0("<br> Appt location : "), measure_breakdown, #label_name
+  #       paste0("<br>", input$pt_measure_type_loc, ": "), count)
+  #   )) +
+  #     geom_col(width = 0.7, fill = "#3F3685") +
+  #     coord_flip()+
+  #     labs(x = "Care contact location", y = input$pt_measure_type_loc) + 
+  #     theme_captnd() +
+  #     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  #     expand_limits(y = 0)
+  # 
+  #   ggplotly(p, tooltip = "text")
+  # 
+  # })
+  
+  #PT prof group
+  output$appt_prof_plot_pt <- renderPlotly({
+    
+    data <- filtered_app_prof_data_pt() |>
+      filter(measure_name == 'Care professional')
+    
+    label_order <- data$measure_breakdown
+    ifelse(any(label_order == "Not known"),
+           label_order <- c(label_order[-which(label_order == "Not known")], "Not known"), "") # put not known and missing to the bottom of the plot
+    ifelse(any(label_order == "Missing data"),
+           label_order <- c(label_order[-which(label_order == "Missing data")], "Missing data"), "")
+    
+    req(nrow(data) > 0)
+    
+    p <- data |>
+      mutate(measure_breakdown = factor(measure_breakdown, levels = label_order)) |>
+      ggplot(aes(
+        x = fct_rev(measure_breakdown),
+        y = count,
+        text = paste(
+          paste0("<b> PT Care Professional <b>"), #label_title
+          "<br>Quarter ending: ", app_quarter_ending,
+          paste0("<br> Care professional : "), measure_breakdown, #label_name
+          paste0("<br>", input$pt_measure_type_prof, ": "), count)
+      )) +
+      geom_col(width = 0.7, fill = "#3F3685") +
+      coord_flip()+
+      labs(x = "Care contact location", y = input$pt_measure_type_prof) + 
+      theme_captnd() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+      expand_limits(y = 0)
+    
+    ggplotly(p, tooltip = "text")
     
   })
   

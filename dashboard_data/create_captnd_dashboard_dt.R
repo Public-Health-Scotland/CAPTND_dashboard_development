@@ -87,6 +87,91 @@ ref_acc_palette <- c("Referral accepted" = "#3F3685", "Referral not accepted" = 
                   "Pending" = "#0078D4", "No information" = "#83BB26")
 
 
+##### Referral non-acceptance/non-acceptance reason #####
+df_non_acc_reason <- read_parquet(paste0(shorewise_pub_data_dir, "/non_acceptance_reason/non_acceptance_reason_quarter_hb.parquet")) |> 
+  select(-total, -prop) |>
+  right_join(df_qt_ds_hb, by = c("dataset_type", "hb_name", "quarter_ending")) |>
+  mutate(hb_name := factor(hb_name, levels = hb_vector),
+         ref_rej_reason_desc = case_when(is.na(ref_rej_reason_desc) ~ 'No data',
+                                         TRUE ~ ref_rej_reason_desc),
+         count = case_when(is.na(count) ~ 0,
+                           TRUE ~ count)) |> 
+  group_by(quarter_ending, dataset_type, hb_name) |>
+  arrange(desc(count), .by_group = TRUE) |>
+  mutate(rank = row_number(),
+         top5 = case_when(rank >5 ~ "All other non acceptance reasons",
+                          TRUE ~ ref_rej_reason_desc)) |>
+  ungroup() |>
+  group_by(quarter_ending, dataset_type, hb_name, top5) |> 
+  mutate(count = sum(count)) |>
+  group_by(quarter_ending, dataset_type, hb_name) |>
+  filter(rank >= 1 & rank <= 6) |>
+  add_proportion_ds_hb(vec_group = c("quarter_ending", "dataset_type", "hb_name")) %>%
+  
+  bind_rows(summarise(.,
+                      across(count, sum),
+                      across(top5, ~"Total"),
+                      across(rank, ~ 7),
+                      across(prop, ~ 100),
+                      .groups = "drop")) |>
+  select(quarter_ending, dataset_type, hb_name, measure_breakdown = top5, 
+         count, rank, total, prop) |>
+  mutate(measure_breakdown = case_when(is.na(measure_breakdown) ~ 'Missing data',
+                                TRUE ~ measure_breakdown))
+
+df_non_acc_reason <- df_non_acc_reason |>
+  pivot_longer(cols = c('count', 'prop'),
+               names_to = 'measure_type',
+               values_to = 'count') |>
+  change_nhsscotland_label() |>
+  arrange(hb_name) |>
+  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of rejected referrals',
+                                  measure_type == 'prop' ~ 'Proportion of rejected referrals (%)',
+                                  TRUE ~ measure_type))
+
+#non acceptance action
+df_non_acc_actions <- read_parquet(paste0(shorewise_pub_data_dir, "/non_acceptance_action/non_acceptance_action_quarter_hb.parquet")) |> 
+  select(-total, -prop) |>
+  right_join(df_qt_ds_hb, by = c("dataset_type", "hb_name", "quarter_ending")) |>
+  mutate(hb_name := factor(hb_name, levels = hb_vector),
+         ref_rej_act_desc = case_when(is.na(ref_rej_act_desc) ~ 'No data',
+                                      TRUE ~ ref_rej_act_desc),
+         count = case_when(is.na(count) ~ 0,
+                           TRUE ~ count)) |> 
+  group_by(quarter_ending, dataset_type, hb_name) |>
+  arrange(desc(count), .by_group = TRUE) |>
+  mutate(rank = row_number(),
+         top5 = case_when(rank >5 ~ "All other non acceptance actions",
+                          TRUE ~ ref_rej_act_desc)) |>
+  ungroup() |>
+  group_by(quarter_ending, dataset_type, hb_name, top5) |> 
+  mutate(count = sum(count)) |>
+  group_by(quarter_ending, dataset_type, hb_name) |>
+  filter(rank >= 1 & rank <= 6) |>
+  add_proportion_ds_hb(vec_group = c("quarter_ending", "dataset_type", "hb_name")) %>%
+  
+  bind_rows(summarise(.,
+                      across(count, sum),
+                      across(top5, ~"Total"),
+                      across(rank, ~ 7),
+                      across(prop, ~ 100),
+                      .groups = "drop")) |>
+  select(quarter_ending, dataset_type, hb_name, rej_action = top5, 
+         count, rank, total, prop) |>
+  mutate(rej_action = case_when(is.na(rej_action) ~ 'Missing data',
+                                TRUE ~ rej_action))
+
+df_non_acc_actions <- df_non_acc_actions |>
+  pivot_longer(cols = c('count', 'prop'),
+               names_to = 'measure_type',
+               values_to = 'count') |>
+  change_nhsscotland_label() |>
+  arrange(hb_name) |>
+  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of rejected referrals',
+                                  measure_type == 'prop' ~ 'Proportion of rejected referrals (%)',
+                                  TRUE ~ measure_type))
+
+
 ##### Appointment attendance #####
 appt_att_df <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_att/apps_att_qt_hb.parquet")) |>
   mutate(measure_name = 'Appointment attendance status') |>
@@ -112,7 +197,7 @@ appt_att_df <- appt_att_df |> ungroup() |>
 
 appt_att_palette <- c("Attended" = "#3F3685", "Clinic cancelled" = "#9B4393", 
                       "Patient DNA" = "#0078D4", "Patient cancelled" = "#83BB26", "Not recorded" = "#6B5C85",
-                      "Patient CNW" = "#C73918", "Not known" = "#948DA3")
+                      "Patient CNW" = "#C73918", "Not known" = "#1E7F84")
 
 ##### First contact attendance #####
 first_con_df <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_firstcon/apps_firstcon_qt_hb.parquet")) |>
@@ -141,42 +226,129 @@ first_con_df <- first_con_df |> ungroup() |>
 master_appts_df <- rbind(appt_att_df, first_con_df)
 
 ##### Referral source #####
-df_ref_source <- read_parquet(paste0(shorewise_pub_data_dir, "/referrals_by_ref_source/ref_source_month_hb.parquet")) |>
+df_ref_source <- read_parquet(paste0(shorewise_pub_data_dir, "/referrals_by_ref_source/ref_source_quarter_hb.parquet")) |>
+  select(-total, -prop) |>
+  right_join(df_ds_hb_name, by = c("dataset_type", "hb_name")) |>
+  mutate(hb_name := factor(hb_name, levels = hb_vector)) |>
+  group_by(quarter_ending, dataset_type, hb_name) |>
+  arrange(desc(count), .by_group = TRUE) |>
+  mutate(rank = row_number(),
+         top5 = case_when(rank >5 ~ "All other referral sources",
+                          TRUE ~ ref_source_name)) |>
+  ungroup() |>
+  group_by(quarter_ending, dataset_type, hb_name, top5) |>
+  mutate(count = sum(count)) |>
+  group_by(quarter_ending, dataset_type, hb_name) |>
+  filter(rank >= 1 & rank <= 6) |>
+  add_proportion_ds_hb(vec_group = c("quarter_ending", "dataset_type", "hb_name")) %>%
+
+  bind_rows(summarise(.,
+                      across(count, sum),
+                      across(top5, ~"Total"),
+                      across(rank, ~ 7),
+                      across(prop, ~ 100),
+                      .groups = "drop")) |>
+  select(quarter_ending, dataset_type, hb_name, ref_source_name = top5,
+         count, rank, total, prop) |>
+  change_nhsscotland_label()
+
+
+df_ref_source <- df_ref_source |>
   mutate(measure_name = 'Referral source') |>
-  rename(measure_breakdown = ref_source_name,
-         Count = count,
-         Total = total,
-         Percentage = prop) |>
-  pivot_longer(cols = c('Count', 'Total', 'Percentage'),
+  rename(measure_breakdown = ref_source_name) |>
+  pivot_longer(cols = c('count','prop'),
                names_to = 'measure_type',
-               values_to = 'count')
+               values_to = 'count') |>
+  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of referrals',
+                                  measure_type == 'prop' ~ 'Proportion of referrals (%)',
+                                  TRUE ~ measure_type))
 
 ##### Appointment care locations #####
-df_care_loc <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_loc/apps_loc_mth_hb.parquet")) |>
+df_care_loc <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_loc/apps_loc_qt_hb.parquet")) |> 
+  select(-total_apps, -prop) |>
+  right_join(df_ds_hb_name, by = c("dataset_type", "hb_name")) |> 
+  mutate(hb_name := factor(hb_name, levels = hb_vector)) |> 
+  group_by(app_quarter_ending, dataset_type, hb_name) |>
+  arrange(desc(count), .by_group = TRUE) |>
+  mutate(rank = row_number(),
+         top5 = case_when(rank >5 ~ "All other care locations",
+                          TRUE ~ loc_label)) |>
+  ungroup() |>
+  group_by(app_quarter_ending, dataset_type, hb_name, top5) |> 
+  mutate(count = sum(count)) |>
+  group_by(app_quarter_ending, dataset_type, hb_name) |>
+  filter(rank >= 1 & rank <= 6,
+         hb_name != 'NHS 24') |>
+  add_proportion_ds_hb(vec_group = c("app_quarter_ending", "dataset_type", "hb_name")) %>%
+  select(app_quarter_ending, dataset_type, hb_name, measure_breakdown = top5, 
+         count, rank, total, prop) |>
+  change_nhsscotland_label() |>
+  mutate(measure_breakdown = case_when(is.na(measure_breakdown) ~ 'Missing data',
+                               TRUE ~ measure_breakdown))
+
+df_care_loc <- df_care_loc |>
   mutate(measure_name = 'Appointment care location') |>
-  rename(measure_breakdown = loc_label,
-         Count = count,
-         Total = total_apps,
-         Percentage = prop) |>
-  pivot_longer(cols = c('Count', 'Total', 'Percentage'),
+  pivot_longer(cols = c('count', 'prop'),
                names_to = 'measure_type',
-               values_to = 'count')
+               values_to = 'count') |>
+  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of appointments',
+                                  measure_type == 'prop' ~ 'Proportion of appointments (%)',
+                                  TRUE ~ measure_type))
 
 ##### Care professionals #####
-df_prof_group <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_prof/apps_prof_mth_hb.parquet")) |>
+df_prof_group <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_prof/apps_prof_qt_hb.parquet")) |> 
+  select(-total_apps, -prop) |>
+  right_join(df_ds_hb_name, by = c("dataset_type", "hb_name")) |> 
+  mutate(hb_name := factor(hb_name, levels = hb_vector)) |> 
+  group_by(app_quarter_ending, dataset_type, hb_name) |>
+  arrange(desc(count), .by_group = TRUE) |>
+  mutate(rank = row_number(),
+         top5 = case_when(rank >5 ~ "All other professional groups",
+                          TRUE ~ prof_label)) |>
+  ungroup() |>
+  group_by(app_quarter_ending, dataset_type, hb_name, top5) |> 
+  mutate(count = sum(count)) |>
+  group_by(app_quarter_ending, dataset_type, hb_name) |>
+  filter(rank >= 1 & rank <= 6,
+         hb_name != 'NHS 24') |>
+  add_proportion_ds_hb(vec_group = c("app_quarter_ending", "dataset_type", "hb_name")) %>%
+  select(app_quarter_ending, dataset_type, hb_name, measure_breakdown = top5, 
+         count, rank, total, prop) |>
+  change_nhsscotland_label() |>
+  mutate(measure_breakdown = case_when(is.na(measure_breakdown) ~ 'Missing data',
+                                TRUE ~ measure_breakdown))
+
+
+df_prof_group <- df_prof_group |>
   mutate(measure_name = 'Care professional') |>
-  rename(measure_breakdown = prof_label,
-         Count = count,
-         Total = total_apps,
-         Percentage = prop) |>
-  pivot_longer(cols = c('Count', 'Total', 'Percentage'),
+  pivot_longer(cols = c('count', 'prop'),
                names_to = 'measure_type',
-               values_to = 'count')
+               values_to = 'count') |>
+  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of appointments',
+                                  measure_type == 'prop' ~ 'Proportion of appointments (%)',
+                                  TRUE ~ measure_type))
 
-##### First contact #####
+master_loc_prof_df <- rbind(df_prof_group, df_care_loc)
 
-##### Waiting list #####
+##### Total appt DNAs #####
+tot_dnas_latest <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_att/apps_att_qt_hb.parquet")) |>
+  filter(Attendance == 'Patient DNA') |>
+  select(dataset_type, hb_name, app_quarter_ending, dna_count = apps_att, total_apps, 
+         dna_rate = prop_apps_att) |>
+  right_join(df_ds_hb_name, by = c("dataset_type", "hb_name")) |> 
+  mutate(hb_name := factor(hb_name, levels = hb_vector)) |> 
+  group_by(app_quarter_ending, dataset_type, hb_name) |>
+  ungroup() |>
+  arrange(dataset_type, hb_name) |>
+  change_nhsscotland_label()
 
-##### Patients seen #####
+tot_dnas_latest <- tot_dnas_latest |>
+  mutate(measure_name = 'Total appt DNAs') |>
+  pivot_longer(cols = c('dna_count', 'dna_rate'),
+               names_to = 'measure_type',
+               values_to = 'count') |>
+  mutate(measure_type = case_when(measure_type == 'dna_count' ~ 'Number of DNAs',
+                                  measure_type == 'dna_rate' ~ 'DNA rate (%)',
+                                  TRUE ~ measure_type))
 
-##### Open cases #####
+
