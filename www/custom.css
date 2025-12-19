@@ -1,0 +1,99 @@
+/* ============================= */
+/* ACTIVE (SELECTED) MENU ITEMS  */
+/* ============================= */
+
+/* Top-level active item */
+.skin-blue .sidebar-menu > li.active > a {
+  background-color: #7a67ee !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;   /* Bold */
+}
+
+/* Submenu active (child) item */
+.skin-blue .sidebar-menu .treeview-menu > li.active > a {
+  background-color: #7a67ee !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;   /* Bold */
+}
+
+/* ============================= */
+/* HOVER STATES (NOT SELECTED)   */
+/* ============================= */
+
+.skin-blue .sidebar-menu > li > a:hover,
+.skin-blue .sidebar-menu .treeview-menu > li > a:hover {
+  background-color: #9a88f2 !important;
+  color: #ffffff !important;
+}
+
+/* ===================================== */
+/* TOP RIGHT PUBLIC HEALTH SCOTLAND LOGO */
+/* ===================================== */
+
+#phs-logo {
+  position: fixed;
+  top: 10px;
+  right: 24px;
+  max-height: 32px;
+  width: auto;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+
+/* ========================================= */
+/* LOCK PLOT WIDTH + HEIGHT ACROSS DASHBOARD */
+/* ========================================= */
+
+.shiny-plot-output,
+.html-widget {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+
+  /* lock vertical size so plots fit on screen */
+  height: 325px !important;
+  max-height: 325px !important;
+}
+
+/* Prevent plot boxes from stretching */
+.box {
+  max-width: 1150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure fluidRows don’t force expansion */
+.content-wrapper .row {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ====================================== */
+/* FIXED HEADER + SIDEBAR WHEN SCROLLING  */
+/* ====================================== */
+
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+}
+
+.main-sidebar,
+.left-side {
+  position: fixed;
+  top: 50px;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+.content-wrapper,
+.right-side,
+.main-footer {
+  margin-top: 50px;
+  margin-left: 230px;
+}
