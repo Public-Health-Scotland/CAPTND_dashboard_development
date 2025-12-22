@@ -1,5 +1,5 @@
 
-create_bar_graph <- function(data, measure_type, palette, quarters_in_data, label_name, label_title) {
+create_bar_graph <- function(data, measure_type, palette, label_name, label_title, quarter) {
   req(nrow(data) > 0) 
   
   data$measure_breakdown <- factor(data$measure_breakdown, levels = sort(unique(data$measure_breakdown)))
@@ -10,7 +10,7 @@ create_bar_graph <- function(data, measure_type, palette, quarters_in_data, labe
     fill = measure_breakdown,
     text = paste(
       paste0("<b>", label_title,"<b>"),
-      "<br>Quarter ending: ", quarter_ending,
+      "<br>Quarter ending: ", quarter,
       paste0("<br>", label_name, ": "), measure_breakdown,
       paste0("<br>", measure_type, ": "), count
     )
