@@ -1,6 +1,7 @@
 
 
-create_horz_bar_graph <- function(data, measure_type, label_name, label_title, xaxis_name) {
+create_horz_bar_graph <- function(data, measure_type, label_name, label_title, 
+                                  xaxis_name, quarter) {
 
 label_order <- data$measure_breakdown
 ifelse(any(label_order == "Not known"),
@@ -17,7 +18,7 @@ p <- data |>
     y = count,
     text = paste(
       paste0("<b>", label_title ,"<b>"), #label_title
-      "<br>Quarter ending: ", app_quarter_ending,
+      "<br>Quarter ending: ", quarter,
       paste0("<br>", label_name, " : "), measure_breakdown, #label_name
       paste0("<br>", measure_type, ": "), count)
   )) +

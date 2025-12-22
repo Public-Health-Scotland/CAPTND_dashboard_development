@@ -70,6 +70,7 @@ source_captnd("07_publication/script/chapters/3_set_constants.R",  local = globa
 source("//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_data/create_captnd_dashboard_dt.R")
 #load graph functions
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_line_graph_function.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_horizontal_bar_graph_function.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_bar_graph_function.R")
 #load text inputs
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/pt_sex_ref_reactive_text.R")
