@@ -1,0 +1,59 @@
+---
+title: "captnd_referrals_intro_pt"
+author: "Luke Taylor"
+date: "2025-12-23"
+output: html_document
+params:
+  dataset_choice: 'PT'
+  hb_choice: 'NHSScotland'
+---
+
+```{r setup, include = FALSE}
+
+# Psychological Therapies
+
+knitr::opts_chunk$set(echo = FALSE, dpi = 300)
+library(ggplot2)
+library(scales)
+library(flextable)
+library(officer)
+library(magrittr)
+library(arrow)
+library(tidyverse)
+
+# source data for tables and inline values
+table_data <- read_parquet(
+  paste0("//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/output/analysis_", data_analysis_latest_date,   "/shorewise_publication/data/referrals/table_referrals_quarterly.parquet")) |>
+  filter(dataset_type == params$dataset_choice,
+         `Health board` == params$hb_choice)
+  
+figs_referrals <- table_data |> 
+  select("last_yr" = 3, "last_qt" = 6, "current_qt" = 7) |> 
+  mutate(across(everything(),~ gsub(",", "", .))) |> 
+  mutate_all(as.numeric) |> 
+  mutate(diff_qt = current_qt - last_qt,
+         diff_yr = current_qt - last_yr,
+         prop_qt = round((diff_qt/last_qt*100), 1),
+         prop_yr = round((diff_yr/last_yr*100), 1),
+         across(1:5, ~prettyNum(., big.mark = ",")))
+```
+
+For the quarter ending `r date_label`, there were a total of `r figs_referrals$current_qt`
+individuals referred to PT recorded in CAPTND across NHSScotland. This was 
+`r ifelse(figs_referrals$diff_qt > 0, "an increase", "a decrease")` of 
+`r gsub("-", "", figs_referrals$diff_qt)` (`r gsub("-", "", figs_referrals$prop_qt)`%)
+compared with the previous quarter, and `r ifelse(figs_referrals$diff_yr > 0, "an increase", "a decrease")`
+of `r gsub("-", "", figs_referrals$diff_yr)` (`r gsub("-", "", figs_referrals$prop_yr)`%) compared with the same 
+quarter ending `r date_label_yr`.  
+
+For some health boards referral numbers may appear to have increased sharply over the past
+five quarters, which may be reflective of improved data quality of submissions allowing
+more pathways to be counted in CAPTND, rather than necessarily representing an actual
+increase in service demand.  
+
+CAPTND data are still under development therefore any inferences or 
+conclusions from this analysis must be treated with caution. Note that referral
+numbers represent those patients for whom it was possible to construct a pathway
+in CAPTND, and may therefore be under-representative of total referrals at health
+board level. See Glossary section to explain differences between Official statistics 
+and Official statistics in development.

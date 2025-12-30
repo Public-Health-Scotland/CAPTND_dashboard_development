@@ -54,7 +54,7 @@ a unique and complete care pathway for an individual within CAPTND (see
 [Variables Reported](#variables-reported) section below). For records where these
 key variables are not available the pathway cannot be created accurately and
 cannot, therefore, be used in CAPTND analysis. A comparison of referral counts before
-and after pathway creation can be found in the accompanying [data quality documents](https://publichealthscotland.scot/publications/child-adolescent-and-psychological-therapies-national-dataset-captnd/psychological-therapies-in-child-adolescent-and-psychological-therapies-national-dataset-2-september-2025/) 
+and after pathway creation can be found in the accompanying data quality documents.
 
 Data returns for CAPTND began in June 2019, and following extensive data quality 
 checking and collaboration with NHS boards data quality improved sufficiently by 
