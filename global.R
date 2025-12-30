@@ -13,12 +13,13 @@ library(shiny)
 library(plotly)
 library(DT)
 library(shinydashboard)
+library(rlang)
 conflicted::conflicts_prefer(shinydashboard::box)
 conflicted::conflicts_prefer(dplyr::filter)
 
 # Constants  - NEED TO MAKE THIS A USER INPUT
-month_end = ymd(readline(prompt = 'Please enter latest reporting month (end of last quarter) (YYYY-MM-DD format): '))
-
+#month_end = ymd(readline(prompt = 'Please enter latest reporting month (end of last quarter) (YYYY-MM-DD format): '))
+month_end <- as.Date('2025-10-01')
 
 # Relative paths ####
 CAPTND_PATH             <- "//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/alan/CAPTND"
@@ -71,9 +72,17 @@ source("//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_das
 #load graph functions
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_line_graph_function.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_horizontal_bar_graph_function.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_new_horz_bar_graph_function.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_bar_graph_function.R")
 #load text inputs
-source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/pt_sex_ref_reactive_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/sex_ref_reactive_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/age_ref_reactive_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/simd_ref_reactive_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/ref_source_reactive_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/ref_non_accept_reason_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/ref_non_accept_action_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/appt_loc_text.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/appt_care_prof_text.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/text_chunks.R")
 
 #Markdown for large text sections
@@ -81,6 +90,25 @@ source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dash
 rmarkdown::render("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/captnd_dashboard_intro.Rmd",
                   output_format = "html_fragment", 
                   output_file = "/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/captnd_dashboard_intro.html")
+
+#render .Rmd file for referral intro
+#PT
+rmarkdown::render("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/captnd_db_referrals_text.Rmd",
+                  params = list(
+                    dataset_choice = "PT",
+                    hb_choice = "NHSScotland"),
+                  envir = globalenv(),
+                  output_format = "html_fragment", 
+                  output_file = "/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/captnd_db_ref_text_pt.html")
+#CAMHS
+rmarkdown::render("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/captnd_db_referrals_text.Rmd",
+                  params = list(
+                    dataset_choice = "CAMHS",
+                    hb_choice = "NHSScotland"),
+                  envir = globalenv(),
+                  output_format = "html_fragment", 
+                  output_file = "/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/captnd_db_ref_text_camhs.html")
+
 #render .Rmd for glossary
 rmarkdown::render("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/captnd_dashboard_glossary.Rmd",
                   output_format = "html_fragment", 

@@ -62,48 +62,64 @@ ui <- dashboardPage(
       ),
       
       # PT Referrals Demographic Tab
-      tabItem(tabName = "pt_referrals",
-              
-              fluidRow(
-                box(title = "PT referrals by sex", width = 12, 
-                    status = "info", solidHeader = TRUE,
-                    uiOutput("pt_referrals_sex_text"),
-                    actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
-                    selectInput("pt_health_board_sex", "Select health board:", 
-                                choices = unique(ref_master_df$hb_name),
-                                selected = default_hb),
-                    radioButtons("pt_measure_type_sex", "Select measurement type:", 
-                                 choices = unique(ref_master_df$measure_type),
-                                 selected = unique(ref_master_df$measure_type)[1]),
-                    plotlyOutput("ref_sex_plot_pt", height = "400px")),
-                fluidRow(
-                  box(title = "PT referrals by age group", width = 12,
-                      status = "info", solidHeader = TRUE,
-                      p("This chart shows the trend of referrals broken down by sex for the selected health board."),
-                      selectInput("pt_health_board_age", "Select health board:",  
-                                  choices = unique(ref_master_df$hb_name),
-                                  selected = default_hb),
-                      radioButtons("pt_measure_type_age", "Select measurement type:", 
-                                   choices = unique(ref_master_df$measure_type),
-                                   selected = unique(ref_master_df$measure_type)[1]),
-                      plotlyOutput("ref_age_plot_pt", height = "400px")),
-                  fluidRow(
-                    box(title = "PT referrals by SIMD", width = 12,
-                        status = "info", solidHeader = TRUE,
-                        p("This chart shows the trend of referrals broken down by SIMD for the selected health board."),
-                        selectInput("pt_health_board_simd", "Select health board:",  
-                                    choices = unique(ref_master_df$hb_name),
-                                    selected = default_hb),
-                        selectInput("pt_quarter_simd", "Select quarter:",
-                                    choice = unique(ref_master_df$quarter_ending),
-                                    selected = default_quarter),
-                        radioButtons("pt_measure_type_simd", "Select measurement type:", 
-                                     choices = unique(ref_master_df$measure_type),
-                                     selected = unique(ref_master_df$measure_type)[1]),
-                        plotlyOutput("ref_simd_plot_pt", height = "400px"))
-                  )
-                )
-              )
+      
+      tabItem(
+        tabName = "pt_referrals",
+        fluidRow(
+          box(
+            width = 12, status = "info", solidHeader = TRUE,
+            title = "PT Referrals",
+            
+            #Intro (HTML file)
+            div(
+              class = "intro-html",
+              includeHTML("captnd_db_ref_text_pt.html")
+            ),
+            
+            #By sex
+            div(
+              class = "section-block",
+              h3(class = "section-title", "PT referrals by sex"),
+              uiOutput("pt_referrals_sex_text"),
+              actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+              selectInput("pt_health_board_sex", "Select health board:",
+                choices = unique(ref_master_df$hb_name),
+                selected = default_hb),
+              radioButtons("pt_measure_type_sex", "Select measurement type:",
+                choices = unique(ref_master_df$measure_type),
+                selected = unique(ref_master_df$measure_type)[1]),
+              plotlyOutput("ref_sex_plot_pt", height = "400px")),
+            
+            #By age group
+            div(
+              class = "section-block",
+              h3(class = "section-title", "PT referrals by age group"),
+              uiOutput("pt_referrals_age_text"),
+              selectInput("pt_health_board_age", "Select health board:",
+                choices = unique(ref_master_df$hb_name),
+                selected = default_hb),
+              radioButtons("pt_measure_type_age", "Select measurement type:",
+                choices = unique(ref_master_df$measure_type),
+                selected = unique(ref_master_df$measure_type)[1]),
+              plotlyOutput("ref_age_plot_pt", height = "400px")),
+            
+            #By SIMD
+            div(
+              class = "section-block",
+              h3(class = "section-title", "PT referrals by SIMD"),
+              uiOutput("pt_referrals_simd_text"),
+              selectInput("pt_health_board_simd", "Select health board:",
+                choices = unique(ref_master_df$hb_name),
+                selected = default_hb),
+              selectInput("pt_quarter_simd", "Select quarter:",
+                choices = unique(ref_master_df$quarter_ending),  # <-- fixed argument name
+                selected = default_quarter),
+              radioButtons("pt_measure_type_simd", "Select measurement type:",
+                choices = unique(ref_master_df$measure_type),
+                selected = unique(ref_master_df$measure_type)[1]),
+              plotlyOutput("ref_simd_plot_pt", height = "400px"))
+          )
+        )
       ),
       
       #PT Referrals Acceptance tab
@@ -112,7 +128,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(title = "PT referral source", width = 12, 
                     status = "info", solidHeader = TRUE,
-                    #uiOutput("pt_referrals_sex_text"),
+                    uiOutput("pt_referral_source_text"),
                     actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                     selectInput("pt_health_board_ref_source", "Select health board:", 
                                 choices = unique(df_ref_source$hb_name),
@@ -120,9 +136,9 @@ ui <- dashboardPage(
                     selectInput("pt_quarter_ref_source", "Select quarter:",
                                 choice = unique(df_ref_source$quarter_ending),
                                 selected = default_quarter),
-                    radioButtons("pt_measure_type_ref_source", "Select measurement type:", 
-                                 choices = unique(df_ref_source$measure_type),
-                                 selected = unique(df_ref_source$measure_type)[1]),
+                    # radioButtons("pt_measure_type_ref_source", "Select measurement type:", 
+                    #              choices = unique(df_ref_source$measure_type),
+                    #              selected = unique(df_ref_source$measure_type)[1]),
                     plotlyOutput("ref_source_plot_pt", height = "400px")),
               fluidRow(
                 box(title = "PT referrals acceptance status", width = 12, 
@@ -139,7 +155,7 @@ ui <- dashboardPage(
                 fluidRow(
                   box(title = "PT referral rejection reasons", width = 12, 
                       status = "info", solidHeader = TRUE,
-                      #uiOutput("pt_referrals_sex_text"),
+                      uiOutput("pt_rej_reason_text"),
                       actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                       selectInput("pt_health_board_rej_reason", "Select health board:", 
                                   choices = unique(master_non_acceptance_df$hb_name),
@@ -147,14 +163,14 @@ ui <- dashboardPage(
                       selectInput("pt_quarter_rej_reason", "Select quarter:",
                                   choice = unique(master_non_acceptance_df$quarter_ending),
                                   selected = default_quarter),
-                      radioButtons("pt_measure_type_rej_reason", "Select measurement type:", 
-                                   choices = unique(master_non_acceptance_df$measure_type),
-                                   selected = unique(master_non_acceptance_df$measure_type)[1]),
+                      # radioButtons("pt_measure_type_rej_reason", "Select measurement type:", 
+                      #              choices = unique(master_non_acceptance_df$measure_type),
+                      #              selected = unique(master_non_acceptance_df$measure_type)[1]),
                       plotlyOutput("ref_rej_reason_plot_pt", height = "400px")),
                   fluidRow(
                     box(title = "PT referral rejection actions", width = 12, 
                         status = "info", solidHeader = TRUE,
-                        #uiOutput("pt_referrals_sex_text"),
+                        uiOutput("pt_rej_action_text"),
                         actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                         selectInput("pt_health_board_rej_action", "Select health board:", 
                                     choices = unique(master_non_acceptance_df$hb_name),
@@ -162,9 +178,9 @@ ui <- dashboardPage(
                         selectInput("pt_quarter_rej_action", "Select quarter:",
                                     choice = unique(master_non_acceptance_df$quarter_ending),
                                     selected = default_quarter),
-                        radioButtons("pt_measure_type_rej_action", "Select measurement type:", 
-                                     choices = unique(master_non_acceptance_df$measure_type),
-                                     selected = unique(master_non_acceptance_df$measure_type)[1]),
+                        # radioButtons("pt_measure_type_rej_action", "Select measurement type:", 
+                        #              choices = unique(master_non_acceptance_df$measure_type),
+                        #              selected = unique(master_non_acceptance_df$measure_type)[1]),
                         plotlyOutput("ref_rej_action_plot_pt", height = "400px"))
                   )
                 ) 
@@ -191,7 +207,7 @@ ui <- dashboardPage(
                 fluidRow(
                   box(title = "PT appointment by location", width = 12, 
                       status = "info", solidHeader = TRUE,
-                      p("This chart shows the location of appointments for the selected health board."),
+                      uiOutput("pt_appt_loc_text"),
                       actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                       selectInput("pt_health_board_loc", "Select health board:", 
                                   choices = unique(master_loc_prof_df$hb_name),
@@ -199,14 +215,14 @@ ui <- dashboardPage(
                       selectInput("pt_quarter_loc", "Select quarter:",
                                   choices = unique(master_loc_prof_df$app_quarter_ending),
                                   selected = default_quarter),
-                      radioButtons("pt_measure_type_loc", "Select measurement type:", 
-                                   choices = unique(master_loc_prof_df$measure_type),
-                                   selected = unique(master_loc_prof_df$measure_type)[1]),
+                      # radioButtons("pt_measure_type_loc", "Select measurement type:", 
+                      #              choices = unique(master_loc_prof_df$measure_type),
+                      #              selected = unique(master_loc_prof_df$measure_type)[1]),
                       plotlyOutput("appt_loc_plot_pt", height = "400px")),
                   fluidRow(
                     box(title = "PT appointment by professional group", width = 12, 
                         status = "info", solidHeader = TRUE,
-                        p("This chart shows appointments by professional group for the selected health board."),
+                        uiOutput("pt_appt_prof_text"),
                         actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                         selectInput("pt_health_board_prof", "Select health board:", 
                                     choices = unique(master_loc_prof_df$hb_name),
@@ -214,9 +230,9 @@ ui <- dashboardPage(
                         selectInput("pt_quarter_prof", "Select quarter:",
                                     choices = unique(master_loc_prof_df$app_quarter_ending),
                                     selected = default_quarter),
-                        radioButtons("pt_measure_type_prof", "Select measurement type:", 
-                                     choices = unique(master_loc_prof_df$measure_type),
-                                     selected = unique(master_loc_prof_df$measure_type)[1]),
+                        # radioButtons("pt_measure_type_prof", "Select measurement type:", 
+                        #              choices = unique(master_loc_prof_df$measure_type),
+                        #              selected = unique(master_loc_prof_df$measure_type)[1]),
                         plotlyOutput("appt_prof_plot_pt", height = "400px"))
                   )
                 )
@@ -257,45 +273,60 @@ ui <- dashboardPage(
       ),
       
       # CAMHS Referrals Tab
-      tabItem(tabName = "camhs_referrals",
-              
-              fluidRow(
-                box(title = "CAMHS referrals by sex", width = 12, status = "info", solidHeader = TRUE,
-                    uiOutput("camhs_referrals_sex_text"),
-                    actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
-                    selectInput("camhs_health_board_sex", "Select health board:", 
-                                choices = unique(ref_master_df$hb_name),
-                                selected = default_hb),
-                    radioButtons("camhs_measure_type_sex", "Select measurement type:", 
-                                 choices = unique(ref_master_df$measure_type),
-                                 selected = unique(ref_master_df$measure_type)[1]),
-                    plotlyOutput("ref_sex_plot_camhs", height = "400px")),
-                fluidRow(
-                  box(title = "CAMHS referrals by age group", width = 12, status = "info", solidHeader = TRUE,
-                      p("This chart shows the trend of referrals broken down by sex for the selected health board."),
-                      selectInput("camhs_health_board_age", "Select health board:", 
-                                  choices = unique(ref_master_df$hb_name),
-                                  selected = default_hb),
-                      radioButtons("camhs_measure_type_age", "Select measurement type:", 
-                                   choices = unique(ref_master_df$measure_type),
-                                   selected = unique(ref_master_df$measure_type)[1]),
-                      plotlyOutput("ref_age_plot_camhs", height = "400px")),
-                  fluidRow(
-                    box(title = "CAMHS referrals by SIMD", width = 12, status = "info", solidHeader = TRUE,
-                        p("This chart shows the trend of referrals broken down by SIMD for the selected health board."),
-                        selectInput("camhs_health_board_simd", "Select health board:",  
-                                    choices = unique(ref_master_df$hb_name),
-                                    selected = default_hb),
-                        selectInput("camhs_quarter_simd", "Select quarter:",
-                                    choice = unique(ref_master_df$quarter_ending),
-                                    selected = default_quarter),
-                        radioButtons("camhs_measure_type_simd", "Select measurement type:", 
-                                     choices = unique(ref_master_df$measure_type),
-                                     selected = unique(ref_master_df$measure_type)[1]),
-                        plotlyOutput("ref_simd_plot_camhs", height = "400px"))
-                  )
-                )
-              )
+      tabItem(
+        tabName = "camhs_referrals",
+        fluidRow(
+          box(
+            width = 12, status = "info", solidHeader = TRUE,
+            title = "CAMHS Referrals",
+            
+            #Intro (HTML file)
+            div(class = "intro-html",
+                includeHTML("captnd_db_ref_text_camhs.html")
+            ),
+            
+            #By sex
+            div(class = "section-block",
+                h3(class = "section-title", "CAMHS referrals by sex"),
+                uiOutput("camhs_referrals_sex_text"),
+                actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                selectInput("camhs_health_board_sex", "Select health board:",
+                            choices = unique(ref_master_df$hb_name), selected = default_hb),
+                radioButtons("camhs_measure_type_sex", "Select measurement type:",
+                             choices = unique(ref_master_df$measure_type),
+                             selected = unique(ref_master_df$measure_type)[1]),
+                plotlyOutput("ref_sex_plot_camhs", height = "400px")
+            ),
+            
+            #By age
+            div(class = "section-block",
+                h3(class = "section-title", "CAMHS referrals by age group"),
+                uiOutput("camhs_referrals_age_text"),
+                actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                selectInput("camhs_health_board_age", "Select health board:",
+                            choices = unique(ref_master_df$hb_name), selected = default_hb),
+                radioButtons("camhs_measure_type_age", "Select measurement type:",
+                             choices = unique(ref_master_df$measure_type),
+                             selected = unique(ref_master_df$measure_type)[1]),
+                plotlyOutput("ref_age_plot_camhs", height = "400px")
+            ),
+            
+            #By SIMD
+            div(class = "section-block",
+                h3(class = "section-title", "CAMHS referrals by SIMD"),
+                uiOutput("camhs_referrals_simd_text"),
+                actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
+                selectInput("camhs_health_board_simd", "Select health board:",
+                            choices = unique(ref_master_df$hb_name), selected = default_hb),
+                selectInput("camhs_quarter_simd", "Select quarter:",
+                            choices = unique(ref_master_df$quarter_ending), selected = default_quarter),
+                radioButtons("camhs_measure_type_simd", "Select measurement type:",
+                             choices = unique(ref_master_df$measure_type),
+                             selected = unique(ref_master_df$measure_type)[1]),
+                plotlyOutput("ref_simd_plot_camhs", height = "400px")
+            )
+          )
+        )
       ),
       
       #CAMHS Referrals Acceptance tab
@@ -304,7 +335,7 @@ ui <- dashboardPage(
               fluidRow(
                 box(title = "CAMHS referral source", width = 12, 
                     status = "info", solidHeader = TRUE,
-                    #uiOutput("pt_referrals_sex_text"),
+                    uiOutput("camhs_referral_source_text"),
                     actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                     selectInput("camhs_health_board_ref_source", "Select health board:", 
                                 choices = unique(df_ref_source$hb_name),
@@ -312,9 +343,9 @@ ui <- dashboardPage(
                     selectInput("camhs_quarter_ref_source", "Select quarter:",
                                 choice = unique(df_ref_source$quarter_ending),
                                 selected = default_quarter),
-                    radioButtons("camhs_measure_type_ref_source", "Select measurement type:", 
-                                 choices = unique(df_ref_source$measure_type),
-                                 selected = unique(df_ref_source$measure_type)[1]),
+                    # radioButtons("camhs_measure_type_ref_source", "Select measurement type:", 
+                    #              choices = unique(df_ref_source$measure_type),
+                    #              selected = unique(df_ref_source$measure_type)[1]),
                     plotlyOutput("ref_source_plot_camhs", height = "400px")),
               fluidRow(
                 box(title = "CAMHS referrals acceptance status", width = 12, 
@@ -331,7 +362,7 @@ ui <- dashboardPage(
                 fluidRow(
                   box(title = "CAMHS referral rejection reasons", width = 12, 
                       status = "info", solidHeader = TRUE,
-                      #uiOutput("pt_referrals_sex_text"),
+                      uiOutput("camhs_rej_reason_text"),
                       actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                       selectInput("camhs_health_board_rej_reason", "Select health board:", 
                                   choices = unique(master_non_acceptance_df$hb_name),
@@ -339,14 +370,14 @@ ui <- dashboardPage(
                       selectInput("camhs_quarter_rej_reason", "Select quarter:",
                                   choice = unique(master_non_acceptance_df$quarter_ending),
                                   selected = default_quarter),
-                      radioButtons("camhs_measure_type_rej_reason", "Select measurement type:", 
-                                   choices = unique(master_non_acceptance_df$measure_type),
-                                   selected = unique(master_non_acceptance_df$measure_type)[1]),
+                      # radioButtons("camhs_measure_type_rej_reason", "Select measurement type:", 
+                      #              choices = unique(master_non_acceptance_df$measure_type),
+                      #              selected = unique(master_non_acceptance_df$measure_type)[1]),
                       plotlyOutput("ref_rej_reason_plot_camhs", height = "400px")),
                   fluidRow(
                     box(title = "CAMHS referral rejection actions", width = 12, 
                         status = "info", solidHeader = TRUE,
-                        #uiOutput("pt_referrals_sex_text"),
+                        uiOutput("camhs_rej_action_text"),
                         actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                         selectInput("camhs_health_board_rej_action", "Select health board:", 
                                     choices = unique(master_non_acceptance_df$hb_name),
@@ -354,9 +385,9 @@ ui <- dashboardPage(
                         selectInput("camhs_quarter_rej_action", "Select quarter:",
                                     choice = unique(master_non_acceptance_df$quarter_ending),
                                     selected = default_quarter),
-                        radioButtons("camhs_measure_type_rej_action", "Select measurement type:", 
-                                     choices = unique(master_non_acceptance_df$measure_type),
-                                     selected = unique(master_non_acceptance_df$measure_type)[1]),
+                        # radioButtons("camhs_measure_type_rej_action", "Select measurement type:", 
+                        #              choices = unique(master_non_acceptance_df$measure_type),
+                        #              selected = unique(master_non_acceptance_df$measure_type)[1]),
                         plotlyOutput("ref_rej_action_plot_camhs", height = "400px"))
                   )
                 ) 
@@ -382,7 +413,7 @@ ui <- dashboardPage(
                 fluidRow(
                   box(title = "CAMHS appointment by location", width = 12, 
                       status = "info", solidHeader = TRUE,
-                      p("This chart shows the location of appointments for the selected health board."),
+                      uiOutput("camhs_appt_loc_text"),
                       actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                       selectInput("camhs_health_board_loc", "Select health board:", 
                                   choices = unique(master_loc_prof_df$hb_name),
@@ -390,14 +421,14 @@ ui <- dashboardPage(
                       selectInput("camhs_quarter_loc", "Select quarter:",
                                   choices = unique(master_loc_prof_df$app_quarter_ending),
                                   selected = default_quarter),
-                      radioButtons("camhs_measure_type_loc", "Select measurement type:", 
-                                   choices = unique(master_loc_prof_df$measure_type),
-                                   selected = unique(master_loc_prof_df$measure_type)[1]),
+                      # radioButtons("camhs_measure_type_loc", "Select measurement type:", 
+                      #              choices = unique(master_loc_prof_df$measure_type),
+                      #              selected = unique(master_loc_prof_df$measure_type)[1]),
                       plotlyOutput("appt_loc_plot_camhs", height = "400px")),
                   fluidRow(
                     box(title = "CAMHS appointment by professional group", width = 12, 
                         status = "info", solidHeader = TRUE,
-                        p("This chart shows appointments by professional group for the selected health board."),
+                        uiOutput("camhs_appt_prof_text"),
                         actionButton("info_btn", "Using the plot", icon = icon("arrow-pointer")),
                         selectInput("camhs_health_board_prof", "Select health board:", 
                                     choices = unique(master_loc_prof_df$hb_name),
@@ -405,9 +436,9 @@ ui <- dashboardPage(
                         selectInput("camhs_quarter_prof", "Select quarter:",
                                     choices = unique(master_loc_prof_df$app_quarter_ending),
                                     selected = default_quarter),
-                        radioButtons("camhs_measure_type_prof", "Select measurement type:", 
-                                     choices = unique(master_loc_prof_df$measure_type),
-                                     selected = unique(master_loc_prof_df$measure_type)[1]),
+                        # radioButtons("camhs_measure_type_prof", "Select measurement type:", 
+                        #              choices = unique(master_loc_prof_df$measure_type),
+                        #              selected = unique(master_loc_prof_df$measure_type)[1]),
                         plotlyOutput("appt_prof_plot_camhs", height = "400px"))
                   )
                 )
