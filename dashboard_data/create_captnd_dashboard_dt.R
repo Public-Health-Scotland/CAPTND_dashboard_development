@@ -115,14 +115,14 @@ df_non_acc_reason <- read_parquet(paste0(shorewise_pub_data_dir, "/non_acceptanc
 
 df_non_acc_reason <- df_non_acc_reason |>
   mutate(measure_name = 'Non-acceptance reason') |>
-  pivot_longer(cols = c('count', 'prop'),
-               names_to = 'measure_type',
-               values_to = 'count') |>
-  change_nhsscotland_label() |>
-  arrange(hb_name) |>
-  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of rejected referrals',
-                                  measure_type == 'prop' ~ 'Proportion of rejected referrals (%)',
-                                  TRUE ~ measure_type))
+  change_nhsscotland_label()
+  # pivot_longer(cols = c('count', 'prop'),
+  #              names_to = 'measure_type',
+  #              values_to = 'count') |>
+  # arrange(hb_name) |>
+  # mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of rejected referrals',
+  #                                 measure_type == 'prop' ~ 'Proportion of rejected referrals (%)',
+  #                                 TRUE ~ measure_type))
 
 #non acceptance action
 df_non_acc_actions <- read_parquet(paste0(shorewise_pub_data_dir, "/non_acceptance_action/non_acceptance_action_quarter_hb.parquet")) |> 
@@ -152,14 +152,15 @@ df_non_acc_actions <- read_parquet(paste0(shorewise_pub_data_dir, "/non_acceptan
 
 df_non_acc_actions <- df_non_acc_actions |>
   mutate(measure_name = 'Non-acceptance action') |>
-  pivot_longer(cols = c('count', 'prop'),
-               names_to = 'measure_type',
-               values_to = 'count') |>
-  change_nhsscotland_label() |>
-  arrange(hb_name) |>
-  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of rejected referrals',
-                                  measure_type == 'prop' ~ 'Proportion of rejected referrals (%)',
-                                  TRUE ~ measure_type))
+  change_nhsscotland_label()
+  # pivot_longer(cols = c('count', 'prop'),
+  #              names_to = 'measure_type',
+  #              values_to = 'count') |>
+  # change_nhsscotland_label() |>
+  # arrange(hb_name) |>
+  # mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of rejected referrals',
+  #                                 measure_type == 'prop' ~ 'Proportion of rejected referrals (%)',
+  #                                 TRUE ~ measure_type))
 
 master_non_acceptance_df <- rbind(df_non_acc_reason, df_non_acc_actions)
 
@@ -241,13 +242,13 @@ df_ref_source <- read_parquet(paste0(shorewise_pub_data_dir, "/referrals_by_ref_
 
 df_ref_source <- df_ref_source |>
   mutate(measure_name = 'Referral source') |>
-  rename(measure_breakdown = ref_source_name) |>
-  pivot_longer(cols = c('count','prop'),
-               names_to = 'measure_type',
-               values_to = 'count') |>
-  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of referrals',
-                                  measure_type == 'prop' ~ 'Proportion of referrals (%)',
-                                  TRUE ~ measure_type))
+  rename(measure_breakdown = ref_source_name) #|>
+  # pivot_longer(cols = c('count','prop'),
+  #              names_to = 'measure_type',
+  #              values_to = 'count') |>
+  # mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of referrals',
+  #                                 measure_type == 'prop' ~ 'Proportion of referrals (%)',
+  #                                 TRUE ~ measure_type))
 
 ##### Appointment care locations #####
 df_care_loc <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_loc/apps_loc_qt_hb.parquet")) |> 
@@ -273,13 +274,13 @@ df_care_loc <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_loc/ap
                                TRUE ~ measure_breakdown))
 
 df_care_loc <- df_care_loc |>
-  mutate(measure_name = 'Appointment care location') |>
-  pivot_longer(cols = c('count', 'prop'),
-               names_to = 'measure_type',
-               values_to = 'count') |>
-  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of appointments',
-                                  measure_type == 'prop' ~ 'Proportion of appointments (%)',
-                                  TRUE ~ measure_type))
+   mutate(measure_name = 'Appointment care location') #|>
+  # pivot_longer(cols = c('count', 'prop'),
+  #              names_to = 'measure_type',
+  #              values_to = 'count') |>
+  # mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of appointments',
+  #                                 measure_type == 'prop' ~ 'Proportion of appointments (%)',
+  #                                 TRUE ~ measure_type))
 
 ##### Care professionals #####
 df_prof_group <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_prof/apps_prof_qt_hb.parquet")) |> 
@@ -306,13 +307,13 @@ df_prof_group <- read_parquet(paste0(shorewise_pub_data_dir, "/appointments_prof
 
 
 df_prof_group <- df_prof_group |>
-  mutate(measure_name = 'Care professional') |>
-  pivot_longer(cols = c('count', 'prop'),
-               names_to = 'measure_type',
-               values_to = 'count') |>
-  mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of appointments',
-                                  measure_type == 'prop' ~ 'Proportion of appointments (%)',
-                                  TRUE ~ measure_type))
+  mutate(measure_name = 'Care professional') #|>
+  # pivot_longer(cols = c('count', 'prop'),
+  #              names_to = 'measure_type',
+  #              values_to = 'count') |>
+  # mutate(measure_type = case_when(measure_type == 'count' ~ 'Number of appointments',
+  #                                 measure_type == 'prop' ~ 'Proportion of appointments (%)',
+  #                                 TRUE ~ measure_type))
 
 master_loc_prof_df <- rbind(df_prof_group, df_care_loc)
 
