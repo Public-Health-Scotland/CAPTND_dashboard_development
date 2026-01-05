@@ -27,7 +27,7 @@ generate_referral_source_text <- function(ref_source_df, dataset_type, hb_name) 
   
     text <- paste0(
       "<p>The most common source of referral to ", dataset_type, " across ", hb_name, " for the
-      quarter ending ", as.character(date_abb), " , was '", highest_source_name, "'(", highest_source_prop,
+      quarter ending ", as.character(date_abb), " was '", highest_source_name, "'(", highest_source_prop,
       "%), followed by '", second_source_name, "'(", second_source_prop, "%).<p>") 
   
   HTML(text)

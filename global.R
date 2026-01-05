@@ -84,6 +84,8 @@ source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dash
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/appt_loc_text.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/appt_care_prof_text.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/text_chunks.R")
+#reactive filters
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_data/reactive_filters.R")
 
 #Markdown for large text sections
 #render .Rmd file for text in 'Home' tab 

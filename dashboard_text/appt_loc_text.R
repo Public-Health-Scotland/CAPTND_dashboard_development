@@ -5,29 +5,57 @@ generate_appt_loc_text <- function(appt_loc_df, dataset_type, hb_name) {
   date_abb <- format(latest_quarter, "%b-%y") 
   
   highest_appt_loc_name <-  appt_loc_df |> 
-    filter(app_quarter_ending == latest_quarter,
-           rank == 1) |>
+    filter(measure_breakdown != 'Missing data',
+           app_quarter_ending == latest_quarter) |>
+    slice(1) |>
     pull(measure_breakdown)
   
+  if (length(highest_appt_loc_name) == 0) highest_appt_loc_name <- NA_character_
+  
   highest_appt_loc_prop <-  appt_loc_df |> 
-    filter(app_quarter_ending == latest_quarter,
-           rank == 1) |>
+    filter(measure_breakdown != 'Missing data',
+           app_quarter_ending == latest_quarter) |>
+    slice(1) |>
     pull(prop)
   
-  # second_appt_loc_name <- appt_loc_df |> 
-  #   filter(quarter_ending == latest_quarter,
-  #          rank == 2) |>
-  #   pull(measure_breakdown)
-  # 
-  # second_appt_loc_prop <- appt_loc_df |> 
-  #   filter(quarter_ending == latest_quarter,
-  #          rank == 2) |>
-  #   pull(prop)
+  second_appt_loc_name <- appt_loc_df |>
+    filter(measure_breakdown != 'Missing data',
+           app_quarter_ending == latest_quarter) |>
+    slice(2) |>
+    pull(measure_breakdown)
   
-  text <- paste0(
-    "<p>The most common contact location recorded in which ", dataset_type, " appointments were conducted across ", 
-    hb_name, " for the quarter ending ", as.character(date_abb), " , was '", highest_appt_loc_name, "'(", 
-    highest_appt_loc_prop,"%).<p>") 
+  if (length(second_appt_loc_name) == 0) second_appt_loc_name <- NA_character_
+
+  second_appt_loc_prop <- appt_loc_df |>
+    filter(measure_breakdown != 'Missing data',
+           app_quarter_ending == latest_quarter) |>
+    slice(2) |>
+    pull(prop)
+  
+  missing_data <- appt_loc_df |>
+    filter(measure_breakdown == 'Missing data',
+           app_quarter_ending == latest_quarter) |>
+    pull(prop) 
+  
+  if (length(missing_data) == 0) missing_data <- NA_real_
+  
+  text <- paste0("<p>The following chart shows the care contact location of appointments recorded
+                 in each health board across the publication period.",
+                 if(!is.na(highest_appt_loc_name)) {
+                   paste0(" The most common contact location recorded in which ", dataset_type, " appointments were conducted across ", 
+                          hb_name, " for the quarter ending ", as.character(date_abb), " was '", highest_appt_loc_name, "' (", 
+                          highest_appt_loc_prop,"%)")
+                 } else {paste0("")},
+                 
+                 if (!is.na(second_appt_loc_name)) {
+                   paste0(", followed by '", second_appt_loc_name, "' (" , second_appt_loc_prop, "%).")
+                 } else {paste0("")},
+                 
+                 if (!is.na(missing_data)) {
+                   paste0(" Contact location data were missing for ", missing_data, "% of total ", dataset_type,
+                          " appointments across ", hb_name, " for the most recent quarter.</p>")
+                 } else {paste0("")},
+                 "</p>")
   
   HTML(text)
 }
