@@ -1,7 +1,6 @@
 #### Server ####
 server <- function(input, output, session) {
   
-  
   #PT referral radio buttons
   observeEvent(input$tabs, {
     
@@ -9,22 +8,19 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_pt",
       choices = unique(ref_master_df$hb_name),
-      selected = unique(ref_master_df$hb_name)[1]
-    )
+      selected = unique(ref_master_df$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_pt",
       choices = unique(ref_master_df$quarter_ending),
-      selected = unique(ref_master_df$quarter_ending)[1]
-    )
+      selected = unique(ref_master_df$quarter_ending)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_pt",
       choices = unique(ref_master_df$measure_type),
-      selected = unique(ref_master_df$measure_type)[1]
-    )
+      selected = unique(ref_master_df$measure_type)[1])
     
   })
   
@@ -35,22 +31,65 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(ref_master_df$hb_name),
-      selected = unique(ref_master_df$hb_name)[1]
-    )
+      selected = unique(ref_master_df$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_camhs",
       choices = unique(ref_master_df$quarter_ending),
-      selected = unique(ref_master_df$quarter_ending)[1]
-    )
+      selected = unique(ref_master_df$quarter_ending)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_camhs",
       choices = unique(ref_master_df$measure_type),
-      selected = unique(ref_master_df$measure_type)[1]
-    )
+      selected = unique(ref_master_df$measure_type)[1])
+    
+  })
+  
+  #PT demo status radio buttons
+  observeEvent(input$tabs, {
+    
+    updateSelectInput(
+      session,
+      inputId = "variable_pt",
+      choices = unique(demo_status_df$measure_name),
+      selected = unique(demo_status_df$measure_name)[1])
+    
+    updateSelectInput(
+      session,
+      inputId = "health_board_pt",
+      choices = unique(demo_status_df$hb_name),
+      selected = unique(demo_status_df$hb_name)[1])
+    
+    updateSelectInput(
+      session,
+      inputId = "quarter_ending_pt",
+      choices = unique(demo_status_df$ref_quarter_ending),
+      selected = unique(demo_status_df$ref_quarter_ending)[1])
+    
+  })
+  
+  #CAMHS demo status radio buttons
+  observeEvent(input$tabs, {
+    
+    updateSelectInput(
+      session,
+      inputId = "variable_camhs",
+      choices = unique(demo_status_df$measure_name),
+      selected = unique(demo_status_df$measure_name)[1])
+    
+    updateSelectInput(
+      session,
+      inputId = "health_board_camhs",
+      choices = unique(demo_status_df$hb_name),
+      selected = unique(demo_status_df$hb_name)[1])
+    
+    updateSelectInput(
+      session,
+      inputId = "quarter_ending_camhs",
+      choices = unique(demo_status_df$ref_quarter_ending),
+      selected = unique(demo_status_df$ref_quarter_ending)[1])
     
   })
   
@@ -61,15 +100,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_pt",
       choices = unique(ref_accept_df$hb_name),
-      selected = unique(ref_accept_df$hb_name)[1]
-    )
+      selected = unique(ref_accept_df$hb_name)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_pt",
       choices = unique(ref_accept_df$measure_type),
-      selected = unique(ref_accept_df$measure_type)[1]
-    )
+      selected = unique(ref_accept_df$measure_type)[1])
     
   })
   
@@ -80,15 +117,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(ref_accept_df$hb_name),
-      selected = unique(ref_accept_df$hb_name)[1]
-    )
+      selected = unique(ref_accept_df$hb_name)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_camhs",
       choices = unique(ref_accept_df$measure_type),
-      selected = unique(ref_accept_df$measure_type)[1]
-    )
+      selected = unique(ref_accept_df$measure_type)[1])
     
   })
   
@@ -100,15 +135,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_pt",
       choices = unique(master_appts_df$hb_name),
-      selected = unique(master_appts_df$hb_name)[1]
-    )
+      selected = unique(master_appts_df$hb_name)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_pt",
       choices = unique(master_appts_df$measure_type),
-      selected = unique(master_appts_df$measure_type)[1]
-    )
+      selected = unique(master_appts_df$measure_type)[1])
     
   })
   
@@ -119,15 +152,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(master_appts_df$hb_name),
-      selected = unique(master_appts_df$hb_name)[1]
-    )
+      selected = unique(master_appts_df$hb_name)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_camhs",
       choices = unique(master_appts_df$measure_type),
-      selected = unique(master_appts_df$measure_type)[1]
-    )
+      selected = unique(master_appts_df$measure_type)[1])
     
   })
   
@@ -138,15 +169,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_pt",
       choices = unique(master_loc_prof_df$hb_name),
-      selected = unique(master_loc_prof_df$hb_name)[1]
-    )
+      selected = unique(master_loc_prof_df$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_pt",
       choices = unique(master_loc_prof_df$app_quarter_ending),
-      selected = unique(master_loc_prof_df$app_quarter_ending)[1]
-    )
+      selected = unique(master_loc_prof_df$app_quarter_ending)[1])
     
     # updateRadioButtons(
     #   session,
@@ -164,15 +193,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(master_loc_prof_df$hb_name),
-      selected = unique(master_loc_prof_df$hb_name)[1]
-    )
+      selected = unique(master_loc_prof_df$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_camhs",
       choices = unique(master_loc_prof_df$app_quarter_ending),
-      selected = unique(master_loc_prof_df$app_quarter_ending)[1]
-    )
+      selected = unique(master_loc_prof_df$app_quarter_ending)[1])
     
     # updateRadioButtons(
     #   session,
@@ -190,15 +217,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_pt",
       choices = unique(master_non_acceptance_df$hb_name),
-      selected = unique(master_non_acceptance_df$hb_name)[1]
-    )
+      selected = unique(master_non_acceptance_df$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_pt",
       choices = unique(master_non_acceptance_df$quarter_ending),
-      selected = unique(master_non_acceptance_df$quarter_ending)[1]
-    )
+      selected = unique(master_non_acceptance_df$quarter_ending)[1])
     
     # updateRadioButtons(
     #   session,
@@ -216,15 +241,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(master_non_acceptance_df$hb_name),
-      selected = unique(master_non_acceptance_df$hb_name)[1]
-    )
+      selected = unique(master_non_acceptance_df$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_camhs",
       choices = unique(master_non_acceptance_df$quarter_ending),
-      selected = unique(master_non_acceptance_df$quarter_ending)[1]
-    )
+      selected = unique(master_non_acceptance_df$quarter_ending)[1])
     
     # updateRadioButtons(
     #   session,
@@ -242,15 +265,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(df_ref_source$hb_name),
-      selected = unique(df_ref_source$hb_name)[1]
-    )
+      selected = unique(df_ref_source$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_camhs",
       choices = unique(df_ref_source$quarter_ending),
-      selected = unique(df_ref_source$quarter_ending)[1]
-    )
+      selected = unique(df_ref_source$quarter_ending)[1])
     
     # updateRadioButtons(
     #   session,
@@ -268,15 +289,13 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(df_ref_source$hb_name),
-      selected = unique(df_ref_source$hb_name)[1]
-    )
+      selected = unique(df_ref_source$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_camhs",
       choices = unique(df_ref_source$quarter_ending),
-      selected = unique(df_ref_source$quarter_ending)[1]
-    )
+      selected = unique(df_ref_source$quarter_ending)[1])
     
     # updateRadioButtons(
     #   session,
@@ -294,22 +313,19 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_pt",
       choices = unique(first_con_dna_simd$hb_name),
-      selected = unique(first_con_dna_simd$hb_name)[1]
-    )
+      selected = unique(first_con_dna_simd$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_pt",
       choices = unique(first_con_dna_simd$app_quarter_ending),
-      selected = unique(first_con_dna_simd$app_quarter_ending)[1]
-    )
+      selected = unique(first_con_dna_simd$app_quarter_ending)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_pt",
       choices = unique(first_con_dna_simd$measure_type),
-      selected = unique(first_con_dna_simd$measure_type)[1]
-    )
+      selected = unique(first_con_dna_simd$measure_type)[1])
     
   })
   
@@ -321,22 +337,19 @@ server <- function(input, output, session) {
       session,
       inputId = "health_board_camhs",
       choices = unique(first_con_dna_simd$hb_name),
-      selected = unique(first_con_dna_simd$hb_name)[1]
-    )
+      selected = unique(first_con_dna_simd$hb_name)[1])
     
     updateSelectInput(
       session,
       inputId = "quarter_ending_camhs",
       choices = unique(first_con_dna_simd$app_quarter_ending),
-      selected = unique(first_con_dna_simd$app_quarter_ending)[1]
-    )
+      selected = unique(first_con_dna_simd$app_quarter_ending)[1])
     
     updateRadioButtons(
       session,
       inputId = "measure_type_camhs",
       choices = unique(first_con_dna_simd$measure_type),
-      selected = unique(first_con_dna_simd$measure_type)[1]
-    )
+      selected = unique(first_con_dna_simd$measure_type)[1])
     
   })
   
@@ -409,6 +422,19 @@ server <- function(input, output, session) {
     generate_referrals_simd_text(ref_simd_df, input$pt_measure_type_simd, dataset_type = 'PT', input$pt_health_board_simd)
     
   })
+  
+  # Reactive for demo status graph
+  filtered_ref_data_demo_status_pt <- reactive({
+    req(input$pt_measure_demo_status, input$pt_health_board_demo_status, input$pt_quarter_demo_status)
+    demo_status_df %>%
+      filter(dataset_type == "PT",
+             measure_name == input$pt_measure_demo_status,
+             hb_name == input$pt_health_board_demo_status,
+             ref_quarter_ending == input$pt_quarter_demo_status)
+  })
+  
+  #Add reactive PT filters
+  init_pt_selects(session, demo_status_df, default_hb = default_hb, default_quarter = default_quarter)
   
   ####PT Referrals Acceptance####
   #Referral source
@@ -538,6 +564,19 @@ server <- function(input, output, session) {
     generate_referrals_simd_text(ref_simd_df, input$camhs_measure_type_simd, dataset_type = 'CAMHS', input$camhs_health_board_simd)
     
   })
+  
+  # Reactive for demo status graph
+  filtered_ref_data_demo_status_camhs <- reactive({
+    req(input$camhs_measure_demo_status, input$camhs_health_board_demo_status, input$camhs_quarter_demo_status)
+    demo_status_df %>%
+      filter(dataset_type == "CAMHS",
+             measure_name == input$camhs_measure_demo_status,
+             hb_name == input$camhs_health_board_demo_status,
+             ref_quarter_ending == input$camhs_quarter_demo_status)
+  })
+  
+  #add reactive CAMHS filters
+  init_camhs_selects(session, demo_status_df, default_hb = default_hb, default_quarter = default_quarter)
   
   ####CAMHS Referrals Acceptance####
   #Referral source
@@ -815,6 +854,38 @@ server <- function(input, output, session) {
                      label_name = "SIMD Quintile", label_title = "CAMHS Referrals",
                      quarter = input$camhs_quarter_simd)
     
+  })
+  
+  #PT demo status plot
+  output$ref_demo_status_plot_pt <- renderPlotly({
+    
+    data <- filtered_ref_data_demo_status_pt()
+    
+    create_new_horz_bar_graph(data, measure_title = 'Number of referrals', label_name = input$camhs_measure_demo_status,
+                              label_title = paste0("PT referrals by ", input$pt_measure_demo_status), 
+                              xaxis_name = input$pt_measure_demo_status, quarter = input$pt_quarter_demo_status)
+    
+  })
+  
+  
+  output$pt_demo_status_header <- renderText({
+    paste("PT referrals by", input$pt_measure_demo_status)
+  })
+  
+  
+  #CAMHS demo status plot
+  output$ref_demo_status_plot_camhs <- renderPlotly({
+    
+    data <- filtered_ref_data_demo_status_camhs()
+    
+    create_new_horz_bar_graph(data, measure_title = 'Number of referrals', label_name = input$camhs_measure_demo_status,
+                              label_title = paste0("PT referrals by ", input$camhs_measure_demo_status), 
+                              xaxis_name = input$camhs_measure_demo_status, quarter = input$camhs_quarter_demo_status)
+    
+  })
+  
+  output$camhs_demo_status_header <- renderText({
+    paste("CAMHS referrals by", input$camhs_measure_demo_status)
   })
   
   #PT referral source plot

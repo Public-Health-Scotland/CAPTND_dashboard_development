@@ -392,3 +392,48 @@ first_con_dna_simd <- first_con_dna_simd |>
                                   TRUE ~ measure_type)) |>
   arrange(app_quarter_ending, hb_name, measure_breakdown)
 
+# Additional demographics
+#Looked after child status
+df_ref_lac <- read_parquet(paste0(ref_lac_dir, "referrals_lac_", "qt_hb.parquet")) |>
+  ungroup() |>
+  rename(measure_breakdown = looked_after_c_edited) |>
+  mutate(measure_name = 'Looked after child status') |>
+  change_nhsscotland_label() |>
+  filter(hb_name != 'NHS 24')
+
+#Child protection status
+df_ref_cps <- read_parquet(paste0(ref_prot_dir, "referrals_prot_", "child_qt_hb.parquet")) |>
+  ungroup() |>
+  rename(measure_breakdown = prot_label) |>
+  mutate(measure_name = 'Child protection status') |>
+  change_nhsscotland_label() |>
+  filter(hb_name != 'NHS 24')
+
+#Adult protection status
+df_ref_aps <- read_parquet(paste0(ref_prot_dir, "referrals_prot_", "adult_qt_hb.parquet")) |>
+  ungroup() |>
+  rename(measure_breakdown = prot_label) |>
+  mutate(measure_name = 'Adult protection status') |>
+  change_nhsscotland_label() |>
+  filter(hb_name != 'NHS 24')
+
+#Veteran status
+df_ref_vets <- read_parquet(paste0(ref_vets_dir, "referrals_vets_", "qt_hb.parquet")) |>
+  ungroup() |>
+  rename(measure_breakdown = vet_label) |>
+  mutate(measure_name = 'Veteran status') |>
+  change_nhsscotland_label() |>
+  filter(hb_name != 'NHS 24')
+
+#Pregnancy/perinatal status
+df_ref_ppmh <- read_parquet(paste0(shorewise_pub_data_dir, "/referrals_by_ppmh/referrals_ppmh_qt_hb_sex.parquet")) |>
+  ungroup() |>
+  rename(measure_breakdown = preg_perinatal) |>
+  mutate(measure_name = 'Pregnancy/perinatal status') |>
+  change_nhsscotland_label() |>
+  select(-sex_reported) |>
+  filter(hb_name != 'NHS 24')
+
+demo_status_df <- rbind(df_ref_lac, df_ref_cps, df_ref_aps, df_ref_vets, df_ref_ppmh)
+
+
