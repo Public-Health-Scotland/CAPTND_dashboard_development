@@ -1,6 +1,8 @@
 ##### UI #####
 ui <- dashboardPage(
+  skin = "blue",
   dashboardHeader(title = "CAPTND Dashboard"),
+  
   
   dashboardSidebar(
     sidebarMenu(id = "tabs",

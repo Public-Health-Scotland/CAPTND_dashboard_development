@@ -1,34 +1,6 @@
-/* ============================= */
-/* ACTIVE (SELECTED) MENU ITEMS  */
-/* ============================= */
-
-/* Top-level active item */
-.skin-blue .sidebar-menu > li.active > a {
-  background-color: #7a67ee !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;   /* Bold */
-}
-
-/* Submenu active (child) item */
-.skin-blue .sidebar-menu .treeview-menu > li.active > a {
-  background-color: #7a67ee !important;
-  color: #ffffff !important;
-  font-weight: 700 !important;   /* Bold */
-}
-
-/* ============================= */
-/* HOVER STATES (NOT SELECTED)   */
-/* ============================= */
-
-.skin-blue .sidebar-menu > li > a:hover,
-.skin-blue .sidebar-menu .treeview-menu > li > a:hover {
-  background-color: #9a88f2 !important;
-  color: #ffffff !important;
-}
-
-/* ===================================== */
-/* TOP RIGHT PUBLIC HEALTH SCOTLAND LOGO */
-/* ===================================== */
+/* ====================================== */
+/* TOP RIGHT PUBLIC HEALTH SCOTLAND LOGO  */
+/* ====================================== */
 
 #phs-logo {
   position: fixed;
@@ -98,3 +70,132 @@
   margin-left: 230px;
 }
 
+/* ================================ */
+/* ===== CAPTND BRAND COLOURS ===== */
+/* ================================ */
+
+/* TOP BANNER — PHS BLUE */
+.skin-blue .main-header .navbar,
+.skin-blue .main-header .logo {
+  background-color: #0096D6 !important; /* PHS blue */
+}
+
+/* LEFT SIDEBAR — PHS PURPLE */
+.skin-blue .main-sidebar,
+.skin-blue .left-side {
+  background-color: #5B2D8B !important; /* PHS purple */
+}
+
+/* SIDEBAR TEXT */
+.skin-blue .sidebar a,
+.skin-blue .sidebar-menu > li > a,
+.skin-blue .sidebar-menu .treeview-menu > li > a {
+  color: #ffffff !important;
+}
+
+/* ACTIVE + HOVER MENU ITEMS — PHS MAGENTA */
+.skin-blue .sidebar-menu > li.active > a,
+.skin-blue .sidebar-menu .treeview-menu > li.active > a,
+.skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu .treeview-menu > li:hover > a {
+  background-color: #9B4393 !important; /* PHS magenta */
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+
+/* ===== FORCE LEFT SIDEBAR BACKGROUND (PHS PURPLE) ===== */
+
+/* The actual sidebar containers */
+body.skin-blue aside#sidebarCollapsed,
+body.skin-blue aside#sidebarCollapsed.main-sidebar,
+body.skin-blue .main-sidebar,
+body.skin-blue .left-side,
+body.skin-blue .main-sidebar .sidebar,
+body.skin-blue .left-side .sidebar {
+  background-color: #5B2D8B !important;   /* PHS purple */
+  background-image: none !important;
+}
+
+/* AdminLTE often draws the sidebar background on a pseudo-element */
+body.skin-blue .main-sidebar:before,
+body.skin-blue .left-side:before,
+body.skin-blue aside#sidebarCollapsed:before {
+  background-color: #5B2D8B !important;   /* PHS purple */
+  background-image: none !important;
+}
+
+/* Collapsed/minified sidebar mode */
+body.skin-blue.sidebar-mini.sidebar-collapse .main-sidebar,
+body.skin-blue.sidebar-mini.sidebar-collapse .main-sidebar:before,
+body.skin-blue.sidebar-mini.sidebar-collapse .main-sidebar .sidebar {
+  background-color: #5B2D8B !important;
+  background-image: none !important;
+}
+
+/* ===================================== */
+/* SIDEBAR DROPDOWNS (TREEVIEW SUBMENUS) */
+/* ===================================== */
+
+/* Submenu container background */
+.skin-blue .sidebar-menu .treeview-menu {
+  background-color: #4B2573 !important;  /* darker shade of PHS purple */
+}
+
+/* Submenu links (default state) */
+.skin-blue .sidebar-menu .treeview-menu > li > a {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}
+
+/* Parent item when submenu is open */
+.skin-blue .sidebar-menu > li.treeview.menu-open > a {
+  background-color: #9B4393 !important;  /* PHS magenta (open state) */
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Submenu hover/active */
+.skin-blue .sidebar-menu .treeview-menu > li:hover > a,
+.skin-blue .sidebar-menu .treeview-menu > li.active > a {
+  background-color: #9B4393 !important;  /* PHS magenta */
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* Chevron / expand indicator colour */
+.skin-blue .sidebar-menu li > a > .pull-right-container > .fa-angle-left,
+.skin-blue .sidebar-menu li > a > .pull-right-container > .fa-angle-down {
+  color: #ffffff !important;
+}
+
+/* ===================================== */
+/* SIDEBAR MENU ITEM BORDERS – PHS GRAPHITE */
+/* ===================================== */
+
+/* Top-level menu items */
+.skin-blue .sidebar-menu > li > a {
+  border: 1px solid #7A7786 !important;   /* PHS graphite */
+  margin: 4px 6px !important;             /* space between items */
+  border-radius: 4px;                     /* optional – remove if unwanted */
+}
+
+/* Submenu container spacing */
+.skin-blue .sidebar-menu .treeview-menu {
+  padding: 4px 6px !important;
+}
+
+/* Submenu items */
+.skin-blue .sidebar-menu .treeview-menu > li > a {
+  border: 1px solid #7A7786 !important;   /* PHS graphite */
+  margin: 4px 0 !important;
+  border-radius: 4px;
+}
+
+/* Active / hover states keep border visible */
+.skin-blue .sidebar-menu > li.active > a,
+.skin-blue .sidebar-menu > li:hover > a,
+.skin-blue .sidebar-menu .treeview-menu > li.active > a,
+.skin-blue .sidebar-menu .treeview-menu > li:hover > a {
+  border-color: #7A7786 !important;       /* keep graphite border */
+}
