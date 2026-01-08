@@ -431,7 +431,7 @@ df_ref_ppmh <- read_parquet(paste0(shorewise_pub_data_dir, "/referrals_by_ppmh/r
   rename(measure_breakdown = preg_perinatal) |>
   mutate(measure_name = 'Pregnancy/perinatal status') |>
   change_nhsscotland_label() |>
-  select(-sex_reported) |>
+  select(-any_of("sex_reported"))|>
   filter(hb_name != 'NHS 24')
 
 demo_status_df <- rbind(df_ref_lac, df_ref_cps, df_ref_aps, df_ref_vets, df_ref_ppmh)
