@@ -375,6 +375,13 @@ server <- function(input, output, session) {
              measure_type == input$pt_measure_type_sex)
   })
   
+  #download data df
+  pt_sex_df <- build_df(ref_master_df, ds = 'PT', measure = 'Referrals by sex')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_sex', pt_sex_df, prefix = "pt_referrals_by_sex")
+
+
+  
   #PT referrals by sex - reactive text
   output$pt_referrals_sex_text <- renderUI({
     
@@ -403,6 +410,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  pt_age_df <- build_df(ref_master_df, ds = 'PT', measure = 'Referrals by age')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_age', pt_age_df, prefix = "pt_referrals_by_age")
+  
   # Reactive for SIMD quintile graph
   filtered_ref_data_simd_pt <- reactive({
     req(input$pt_health_board_simd, input$pt_quarter_simd, input$pt_measure_type_simd)
@@ -423,6 +435,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  pt_simd_df <- build_df(ref_master_df, ds = 'PT', measure = 'Referrals by SIMD')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_simd', pt_simd_df, prefix = "pt_referrals_by_simd")
+  
   # Reactive for demo status graph
   filtered_ref_data_demo_status_pt <- reactive({
     req(input$pt_measure_demo_status, input$pt_health_board_demo_status, input$pt_quarter_demo_status)
@@ -435,6 +452,18 @@ server <- function(input, output, session) {
   
   #Add reactive PT filters
   init_pt_selects(session, demo_status_df, default_hb = default_hb, default_quarter = default_quarter)
+  
+  #download data df
+  pt_demo_df <- reactive({
+    req(input$pt_measure_demo_status)
+    build_df(
+      demo_status_df,                 
+      ds = "PT",
+      measure = input$pt_measure_demo_status)
+  })
+  
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_demo', pt_demo_df, prefix = "pt_referrals_by_demo")
   
   ####PT Referrals Acceptance####
   #Referral source
@@ -456,6 +485,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  pt_ref_source_df <- build_df(df_ref_source, ds = 'PT', measure = 'Referral source')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_source', pt_ref_source_df, prefix = "pt_referrals_by_ref_source")
+  
   #Acceptance
   filtered_ref_data_accept_pt <- reactive({
     req(input$pt_health_board_accept, input$pt_measure_type_accept)
@@ -464,6 +498,11 @@ server <- function(input, output, session) {
              hb_name == input$pt_health_board_accept,
              measure_type == input$pt_measure_type_accept)
   })
+  
+  #download data df
+  pt_ref_accept_df <- build_df(ref_accept_df, ds = 'PT', measure = 'Referrals acceptance status')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_accept', pt_ref_accept_df, prefix = "pt_referrals_by_acceptance_status")
   
   #Rejected reasons
   filtered_ref_data_rej_reason_pt <- reactive({
@@ -485,6 +524,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  pt_rej_reason_df <- build_df(master_non_acceptance_df, ds = 'PT', measure = 'Non-acceptance reason')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_rej_reason', pt_rej_reason_df, prefix = "pt_referrals_by_rejection_reason")
+  
   #Rejected actions
   filtered_ref_data_rej_action_pt <- reactive({
     req(input$pt_health_board_rej_action, input$pt_quarter_rej_action)
@@ -504,6 +548,11 @@ server <- function(input, output, session) {
     generate_non_accept_action_text(non_accept_action_df, dataset_type = 'PT', input$pt_health_board_rej_action)
     
   })
+  
+  #download data df
+  pt_rej_action_df <- build_df(master_non_acceptance_df, ds = 'PT', measure = 'Non-acceptance action')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_rej_action', pt_rej_action_df, prefix = "pt_referrals_by_rejection_action")
   
   ####CAMHS Referrals Demographic####
   
@@ -526,6 +575,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_sex_df <- build_df(ref_master_df, ds = 'CAMHS', measure = 'Referrals by sex')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_sex', camhs_sex_df, prefix = "camhs_referrals_by_sex")
+  
   # Reactive for age group graph
   filtered_ref_data_age_camhs <- reactive({
     req(input$camhs_health_board_age, input$camhs_measure_type_age)
@@ -544,6 +598,12 @@ server <- function(input, output, session) {
     generate_referrals_age_text(ref_age_df, input$camhs_measure_type_age, dataset_type = 'CAMHS', input$camhs_health_board_age)
     
   })
+  
+  #download data df
+  camhs_age_df <- build_df(ref_master_df, ds = 'CAMHS', measure = 'Referrals by age') |>
+    mutate(measure_breakdown = paste0("'", measure_breakdown))
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_age', camhs_age_df, prefix = "camhs_referrals_by_age")
   
   #Reactive for SIMD quintile graph
   filtered_ref_data_simd_camhs <- reactive({
@@ -565,6 +625,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_simd_df <- build_df(ref_master_df, ds = 'CAMHS', measure = 'Referrals by SIMD')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_simd', camhs_simd_df, prefix = "camhs_referrals_by_simd")
+  
   # Reactive for demo status graph
   filtered_ref_data_demo_status_camhs <- reactive({
     req(input$camhs_measure_demo_status, input$camhs_health_board_demo_status, input$camhs_quarter_demo_status)
@@ -577,6 +642,18 @@ server <- function(input, output, session) {
   
   #add reactive CAMHS filters
   init_camhs_selects(session, demo_status_df, default_hb = default_hb, default_quarter = default_quarter)
+  
+  #download data df
+  camhs_demo_df <- reactive({
+    req(input$camhs_measure_demo_status)
+    build_df(
+      demo_status_df,                 
+      ds = "CAMHS",
+      measure = input$camhs_measure_demo_status)
+  })
+  
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_demo', camhs_demo_df, prefix = "camhs_referrals_by_demo")
   
   ####CAMHS Referrals Acceptance####
   #Referral source
@@ -598,6 +675,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_ref_source_df <- build_df(df_ref_source, ds = 'CAMHS', measure = 'Referral source')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_source', camhs_ref_source_df, prefix = "camhs_referrals_by_ref_source")
+  
   #Acceptance
   filtered_ref_data_accept_camhs <- reactive({
     req(input$camhs_health_board_accept, input$camhs_measure_type_accept)
@@ -606,6 +688,11 @@ server <- function(input, output, session) {
              hb_name == input$camhs_health_board_accept,
              measure_type == input$camhs_measure_type_accept)
   })
+  
+  #download data df
+  camhs_ref_accept_df <- build_df(ref_accept_df, ds = 'CAMHS', measure = 'Referrals acceptance status')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_accept', camhs_ref_accept_df, prefix = "camhs_referrals_by_acceptance_status")
   
   #Rejected reasons
   filtered_ref_data_rej_reason_camhs <- reactive({
@@ -627,6 +714,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_rej_reason_df <- build_df(master_non_acceptance_df, ds = 'CAMHS', measure = 'Non-acceptance reason')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_rej_reason', camhs_rej_reason_df, prefix = "camhs_referrals_by_rejection_reason")
+  
   #Rejected actions
   filtered_ref_data_rej_action_camhs <- reactive({
     req(input$camhs_health_board_rej_action, input$camhs_quarter_rej_action)
@@ -647,15 +739,26 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_rej_action_df <- build_df(master_non_acceptance_df, ds = 'CAMHS', measure = 'Non-acceptance action')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_rej_action', camhs_rej_action_df, prefix = "camhs_referrals_by_rejection_action")
+  
   ####PT Appointments####
   ## All appointments ##
   filtered_appt_att_data_pt <- reactive({
     req(input$pt_health_board_att, input$pt_measure_type_att)
     master_appts_df %>%
       filter(dataset_type == "PT",
+             measure_name == 'Total appointment attendances',
              hb_name == input$pt_health_board_att,
              measure_type == input$pt_measure_type_att)
   })
+  
+  #download data df
+  pt_appt_tot_df <- build_df(master_appts_df, ds = 'PT', measure = 'Total appointment attendances')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_appt_tot', pt_appt_tot_df, prefix = "pt_total_appointments")
   
   ## Appt location ##
   filtered_appt_loc_data_pt <- reactive({
@@ -677,6 +780,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  pt_appt_loc_df <- build_df(master_loc_prof_df, ds = 'PT', measure = 'Appointment care location')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_appt_loc', pt_appt_loc_df, prefix = "pt_appointment_location")
+  
   ## Prof group ##
   filtered_appt_prof_data_pt <- reactive({
     req(input$pt_health_board_prof, input$pt_quarter_prof)
@@ -697,14 +805,25 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  pt_appt_prof_df <- build_df(master_loc_prof_df, ds = 'PT', measure = 'Care professional')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_appt_prof', pt_appt_prof_df, prefix = "pt_appointment_professional")
+  
   ## First contact ##
   filtered_first_appt_data_pt <- reactive({
     req(input$pt_health_board_first_appt, input$pt_measure_type_first_appt)
     master_appts_df %>%
       filter(dataset_type == "PT",
+             measure_name == "First contact attendances",
              hb_name == input$pt_health_board_first_appt,
              measure_type == input$pt_measure_type_first_appt)
   })
+  
+  #download data df
+  pt_first_appt_df <- build_df(master_appts_df, ds = 'PT', measure = 'First contact attendances')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_first_appt', pt_first_appt_df, prefix = "pt_first_appointment")
   
   ## First contact DNAs ##
   filtered_first_appt_dnas_data_pt <- reactive({
@@ -716,14 +835,25 @@ server <- function(input, output, session) {
              measure_type == input$pt_measure_type_first_appt_dna)
   })
   
+  #download data df
+  pt_first_dna_df <- build_df(first_con_dna_simd, ds = 'PT', measure = 'First contact DNAs')
+  #download data button
+  attach_download_csv(output, 'download_csv_pt_first_appt_dna', pt_first_dna_df, prefix = "pt_first_appointment_dna")
+  
   ####CAMHS Appointments####
   filtered_appt_att_data_camhs <- reactive({
     req(input$camhs_health_board_att, input$camhs_measure_type_att)
     master_appts_df %>%
       filter(dataset_type == "CAMHS",
+             measure_name == "Total appointment attendances",
              hb_name == input$camhs_health_board_att,
              measure_type == input$camhs_measure_type_att)
   })
+  
+  #download data df
+  camhs_appt_tot_df <- build_df(master_appts_df, ds = 'CAMHS', measure = 'Total appointment attendances')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_appt_tot', camhs_appt_tot_df, prefix = "camhs_total_appointments")
   
   ## Appt location ##
   filtered_appt_loc_data_camhs <- reactive({
@@ -745,6 +875,11 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_appt_loc_df <- build_df(master_loc_prof_df, ds = 'CAMHS', measure = 'Appointment care location')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_appt_loc', camhs_appt_loc_df, prefix = "camhs_appointment_location")
+  
   ## Prof group ##
   filtered_appt_prof_data_camhs <- reactive({
     req(input$camhs_health_board_prof, input$camhs_quarter_prof)
@@ -765,14 +900,25 @@ server <- function(input, output, session) {
     
   })
   
+  #download data df
+  camhs_appt_prof_df <- build_df(master_loc_prof_df, ds = 'CAMHS', measure = 'Care professional')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_appt_prof', camhs_appt_prof_df, prefix = "camhs_appointment_prof")
+  
   ## First contact ##
   filtered_first_appt_data_camhs <- reactive({
     req(input$camhs_health_board_first_appt, input$camhs_measure_type_first_appt)
     master_appts_df %>%
       filter(dataset_type == "CAMHS",
+             measure_name == "First contact attendances",
              hb_name == input$camhs_health_board_first_appt,
              measure_type == input$camhs_measure_type_first_appt)
   })
+  
+  #download data df
+  camhs_first_appt_df <- build_df(master_appts_df, ds = 'CAMHS', measure = 'First contact attendances')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_first_appt', camhs_first_appt_df, prefix = "camhs_first_appointment")
   
   ## First contact DNAs ##
   filtered_first_appt_dnas_data_camhs <- reactive({
@@ -784,6 +930,10 @@ server <- function(input, output, session) {
              measure_type == input$camhs_measure_type_first_appt_dna)
   })
   
+  #download data df
+  camhs_first_dna_df <- build_df(first_con_dna_simd, ds = 'CAMHS', measure = 'First contact DNAs')
+  #download data button
+  attach_download_csv(output, 'download_csv_camhs_first_appt_dna', camhs_first_dna_df, prefix = "camhs_first_appointment_dna")
   
   #### Plots ####
   
