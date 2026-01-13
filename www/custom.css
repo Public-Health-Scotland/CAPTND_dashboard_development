@@ -199,3 +199,18 @@ body.skin-blue.sidebar-mini.sidebar-collapse .main-sidebar .sidebar {
 .skin-blue .sidebar-menu .treeview-menu > li:hover > a {
   border-color: #7A7786 !important;       /* keep graphite border */
 }
+
+
+.btn-download {
+  background-color: #1E7F84;
+  color: #fff;
+  border: 1px solid #4B999D;
+}
+.btn-download:hover {
+  background-color: #1E7F84;
+  border-color: #1E7F84;
+}
+.btn-download:focus {
+  box-shadow: 0 0 0 3px rgba(11,58,117,0.25);
+}
+

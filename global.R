@@ -19,7 +19,7 @@ conflicted::conflicts_prefer(dplyr::filter)
 
 # Constants  - NEED TO MAKE THIS A USER INPUT
 #month_end = ymd(readline(prompt = 'Please enter latest reporting month (end of last quarter) (YYYY-MM-DD format): '))
-month_end <- as.Date('2025-10-01')
+month_end <- as.Date('2025-11-01')
 
 # Relative paths ####
 CAPTND_PATH             <- "//PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/alan/CAPTND"
@@ -74,6 +74,7 @@ source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dash
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_horizontal_bar_graph_function.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_new_horz_bar_graph_function.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/graph_functions/create_bar_graph_function.R")
+source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/download_data_function.R")
 #load text inputs
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/sex_ref_reactive_text.R")
 source("/PHI_conf/MentalHealth5/CAPTND/CAPTND_shorewise/scripts/luke/captnd_dashboard/dashboard_text/age_ref_reactive_text.R")

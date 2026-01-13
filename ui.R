@@ -79,7 +79,9 @@ ui <- dashboardPage(
                 radioButtons("pt_measure_type_sex", "Select measurement type:",
                              choices = unique(ref_master_df$measure_type),
                              selected = unique(ref_master_df$measure_type)[1]),
-                plotlyOutput("ref_sex_plot_pt", height = "400px")),
+                plotlyOutput("ref_sex_plot_pt", height = "400px"),
+                downloadButton("download_csv_pt_sex", "Download data", class = "btn-download")),
+            
             
             #By age group
             div(class = "section-block",
@@ -91,7 +93,8 @@ ui <- dashboardPage(
                 radioButtons("pt_measure_type_age", "Select measurement type:",
                              choices = unique(ref_master_df$measure_type),
                              selected = unique(ref_master_df$measure_type)[1]),
-                plotlyOutput("ref_age_plot_pt", height = "400px")),
+                plotlyOutput("ref_age_plot_pt", height = "400px"),
+                downloadButton("download_csv_pt_age", "Download data", class = "btn-download")),
             
             #By SIMD
             div(class = "section-block",
@@ -106,7 +109,8 @@ ui <- dashboardPage(
                 radioButtons("pt_measure_type_simd", "Select measurement type:",
                              choices = unique(ref_master_df$measure_type),
                              selected = unique(ref_master_df$measure_type)[1]),
-                plotlyOutput("ref_simd_plot_pt", height = "400px")),
+                plotlyOutput("ref_simd_plot_pt", height = "400px"),
+                downloadButton("download_csv_pt_simd", "Download data", class = "btn-download")),
             
             #Adult protection/Veteran status/PPMH
             div(class = "section-block",
@@ -118,7 +122,8 @@ ui <- dashboardPage(
                             choices = NULL),
                 selectInput("pt_quarter_demo_status", "Select quarter:",
                             choices = NULL),
-                plotlyOutput("ref_demo_status_plot_pt", height = "400px"))
+                plotlyOutput("ref_demo_status_plot_pt", height = "400px"),
+                downloadButton("download_csv_pt_demo", "Download data", class = "btn-download"))
           )
         )
       ),
@@ -140,7 +145,8 @@ ui <- dashboardPage(
                     # radioButtons("pt_measure_type_ref_source", "Select measurement type:", 
                     #              choices = unique(df_ref_source$measure_type),
                     #              selected = unique(df_ref_source$measure_type)[1]),
-                    plotlyOutput("ref_source_plot_pt", height = "400px")),
+                    plotlyOutput("ref_source_plot_pt", height = "400px"),
+                    downloadButton("download_csv_pt_source", "Download data", class = "btn-download")),
               fluidRow(
                 box(title = "PT referrals acceptance status", width = 12, 
                     status = "info", solidHeader = TRUE,
@@ -152,7 +158,8 @@ ui <- dashboardPage(
                     radioButtons("pt_measure_type_accept", "Select measurement type:", 
                                  choices = unique(ref_accept_df$measure_type),
                                  selected = unique(ref_accept_df$measure_type)[1]),
-                    plotlyOutput("ref_accept_plot_pt", height = "400px")),
+                    plotlyOutput("ref_accept_plot_pt", height = "400px"),
+                    downloadButton("download_csv_pt_accept", "Download data", class = "btn-download")),
                 fluidRow(
                   box(title = "PT referral rejection reasons", width = 12, 
                       status = "info", solidHeader = TRUE,
@@ -167,7 +174,8 @@ ui <- dashboardPage(
                       # radioButtons("pt_measure_type_rej_reason", "Select measurement type:", 
                       #              choices = unique(master_non_acceptance_df$measure_type),
                       #              selected = unique(master_non_acceptance_df$measure_type)[1]),
-                      plotlyOutput("ref_rej_reason_plot_pt", height = "400px")),
+                      plotlyOutput("ref_rej_reason_plot_pt", height = "400px"),
+                      downloadButton("download_csv_pt_rej_reason", "Download data", class = "btn-download")),
                   fluidRow(
                     box(title = "PT referral rejection actions", width = 12, 
                         status = "info", solidHeader = TRUE,
@@ -182,7 +190,8 @@ ui <- dashboardPage(
                         # radioButtons("pt_measure_type_rej_action", "Select measurement type:", 
                         #              choices = unique(master_non_acceptance_df$measure_type),
                         #              selected = unique(master_non_acceptance_df$measure_type)[1]),
-                        plotlyOutput("ref_rej_action_plot_pt", height = "400px"))
+                        plotlyOutput("ref_rej_action_plot_pt", height = "400px"),
+                        downloadButton("download_csv_pt_rej_action", "Download data", class = "btn-download"))
                   )
                 ) 
               )
@@ -204,7 +213,8 @@ ui <- dashboardPage(
                     radioButtons("pt_measure_type_att", "Select measurement type:", 
                                  choices = unique(master_appts_df$measure_type),
                                  selected = unique(master_appts_df$measure_type)[1]),
-                    plotlyOutput("appt_att_plot_pt", height = "400px")),
+                    plotlyOutput("appt_att_plot_pt", height = "400px"),
+                    downloadButton("download_csv_pt_appt_tot", "Download data", class = "btn-download")),
                 fluidRow(
                   box(title = "PT appointment by location", width = 12, 
                       status = "info", solidHeader = TRUE,
@@ -219,7 +229,8 @@ ui <- dashboardPage(
                       # radioButtons("pt_measure_type_loc", "Select measurement type:", 
                       #              choices = unique(master_loc_prof_df$measure_type),
                       #              selected = unique(master_loc_prof_df$measure_type)[1]),
-                      plotlyOutput("appt_loc_plot_pt", height = "400px")),
+                      plotlyOutput("appt_loc_plot_pt", height = "400px"),
+                      downloadButton("download_csv_pt_appt_loc", "Download data", class = "btn-download")),
                   fluidRow(
                     box(title = "PT appointment by professional group", width = 12, 
                         status = "info", solidHeader = TRUE,
@@ -234,7 +245,8 @@ ui <- dashboardPage(
                         # radioButtons("pt_measure_type_prof", "Select measurement type:", 
                         #              choices = unique(master_loc_prof_df$measure_type),
                         #              selected = unique(master_loc_prof_df$measure_type)[1]),
-                        plotlyOutput("appt_prof_plot_pt", height = "400px"))
+                        plotlyOutput("appt_prof_plot_pt", height = "400px"),
+                        downloadButton("download_csv_pt_appt_prof", "Download data", class = "btn-download"))
                   )
                 )
               )
@@ -253,7 +265,8 @@ ui <- dashboardPage(
                     radioButtons("pt_measure_type_first_appt", "Select measurement type:", 
                                  choices = unique(master_appts_df$measure_type),
                                  selected = unique(master_appts_df$measure_type)[1]),
-                    plotlyOutput("first_appt_plot_pt", height = "400px")),
+                    plotlyOutput("first_appt_plot_pt", height = "400px"),
+                    downloadButton("download_csv_pt_first_appt", "Download data", class = "btn-download")),
                 fluidRow(
                   box(title = "PT First contact DNAs by SIMD", width = 12, 
                       status = "info", solidHeader = TRUE,
@@ -268,7 +281,8 @@ ui <- dashboardPage(
                       radioButtons("pt_measure_type_first_appt_dna", "Select measurement type:", 
                                    choices = unique(first_con_dna_simd$measure_type),
                                    selected = unique(first_con_dna_simd$measure_type)[1]),
-                      plotlyOutput("first_appt_dna_pt", height = "400px"))
+                      plotlyOutput("first_appt_dna_pt", height = "400px"),
+                      downloadButton("download_csv_pt_first_appt_dna", "Download data", class = "btn-download"))
                 )
               )
       ),
@@ -291,7 +305,8 @@ ui <- dashboardPage(
                 radioButtons("camhs_measure_type_sex", "Select measurement type:",
                              choices = unique(ref_master_df$measure_type),
                              selected = unique(ref_master_df$measure_type)[1]),
-                plotlyOutput("ref_sex_plot_camhs", height = "400px")),
+                plotlyOutput("ref_sex_plot_camhs", height = "400px"),
+                downloadButton("download_csv_camhs_sex", "Download data", class = "btn-download")),
             
             #By age
             div(class = "section-block",
@@ -303,7 +318,8 @@ ui <- dashboardPage(
                 radioButtons("camhs_measure_type_age", "Select measurement type:",
                              choices = unique(ref_master_df$measure_type),
                              selected = unique(ref_master_df$measure_type)[1]),
-                plotlyOutput("ref_age_plot_camhs", height = "400px")),
+                plotlyOutput("ref_age_plot_camhs", height = "400px"),
+                downloadButton("download_csv_camhs_age", "Download data", class = "btn-download")),
             
             #By SIMD
             div(class = "section-block",
@@ -317,7 +333,8 @@ ui <- dashboardPage(
                 radioButtons("camhs_measure_type_simd", "Select measurement type:",
                              choices = unique(ref_master_df$measure_type),
                              selected = unique(ref_master_df$measure_type)[1]),
-                plotlyOutput("ref_simd_plot_camhs", height = "400px")),
+                plotlyOutput("ref_simd_plot_camhs", height = "400px"),
+                downloadButton("download_csv_camhs_simd", "Download data", class = "btn-download")),
                 
                 #Child protection status/Looked after child status
                 div(class = "section-block",
@@ -329,7 +346,8 @@ ui <- dashboardPage(
                                 choices = NULL),
                     selectInput("camhs_quarter_demo_status", "Select quarter:",
                                 choices = NULL),
-                    plotlyOutput("ref_demo_status_plot_camhs", height = "400px"))
+                    plotlyOutput("ref_demo_status_plot_camhs", height = "400px"),
+                    downloadButton("download_csv_camhs_demo", "Download data", class = "btn-download"))
           )
         )
       ),
@@ -351,7 +369,8 @@ ui <- dashboardPage(
                     # radioButtons("camhs_measure_type_ref_source", "Select measurement type:", 
                     #              choices = unique(df_ref_source$measure_type),
                     #              selected = unique(df_ref_source$measure_type)[1]),
-                    plotlyOutput("ref_source_plot_camhs", height = "400px")),
+                    plotlyOutput("ref_source_plot_camhs", height = "400px"),
+                    downloadButton("download_csv_camhs_source", "Download data", class = "btn-download")),
               fluidRow(
                 box(title = "CAMHS referrals acceptance status", width = 12, 
                     status = "info", solidHeader = TRUE,
@@ -363,7 +382,8 @@ ui <- dashboardPage(
                     radioButtons("camhs_measure_type_accept", "Select measurement type:", 
                                  choices = unique(ref_accept_df$measure_type),
                                  selected = unique(ref_accept_df$measure_type)[1]),
-                    plotlyOutput("ref_accept_plot_camhs", height = "400px")),
+                    plotlyOutput("ref_accept_plot_camhs", height = "400px"),
+                    downloadButton("download_csv_camhs_accept", "Download data", class = "btn-download")),
                 fluidRow(
                   box(title = "CAMHS referral rejection reasons", width = 12, 
                       status = "info", solidHeader = TRUE,
@@ -378,7 +398,8 @@ ui <- dashboardPage(
                       # radioButtons("camhs_measure_type_rej_reason", "Select measurement type:", 
                       #              choices = unique(master_non_acceptance_df$measure_type),
                       #              selected = unique(master_non_acceptance_df$measure_type)[1]),
-                      plotlyOutput("ref_rej_reason_plot_camhs", height = "400px")),
+                      plotlyOutput("ref_rej_reason_plot_camhs", height = "400px"),
+                      downloadButton("download_csv_camhs_rej_reason", "Download data", class = "btn-download")),
                   fluidRow(
                     box(title = "CAMHS referral rejection actions", width = 12, 
                         status = "info", solidHeader = TRUE,
@@ -393,7 +414,8 @@ ui <- dashboardPage(
                         # radioButtons("camhs_measure_type_rej_action", "Select measurement type:", 
                         #              choices = unique(master_non_acceptance_df$measure_type),
                         #              selected = unique(master_non_acceptance_df$measure_type)[1]),
-                        plotlyOutput("ref_rej_action_plot_camhs", height = "400px"))
+                        plotlyOutput("ref_rej_action_plot_camhs", height = "400px"),
+                        downloadButton("download_csv_camhs_rej_action", "Download data", class = "btn-download"))
                   )
                 ) 
               )
@@ -414,7 +436,8 @@ ui <- dashboardPage(
                     radioButtons("camhs_measure_type_att", "Select measurement type:", 
                                  choices = unique(master_appts_df$measure_type),
                                  selected = unique(master_appts_df$measure_type)[1]),
-                    plotlyOutput("appt_att_plot_camhs", height = "400px")),
+                    plotlyOutput("appt_att_plot_camhs", height = "400px"),
+                    downloadButton("download_csv_camhs_appt_tot", "Download data", class = "btn-download")),
                 fluidRow(
                   box(title = "CAMHS appointment by location", width = 12, 
                       status = "info", solidHeader = TRUE,
@@ -429,7 +452,8 @@ ui <- dashboardPage(
                       # radioButtons("camhs_measure_type_loc", "Select measurement type:", 
                       #              choices = unique(master_loc_prof_df$measure_type),
                       #              selected = unique(master_loc_prof_df$measure_type)[1]),
-                      plotlyOutput("appt_loc_plot_camhs", height = "400px")),
+                      plotlyOutput("appt_loc_plot_camhs", height = "400px"),
+                      downloadButton("download_csv_camhs_appt_loc", "Download data", class = "btn-download")),
                   fluidRow(
                     box(title = "CAMHS appointment by professional group", width = 12, 
                         status = "info", solidHeader = TRUE,
@@ -444,7 +468,8 @@ ui <- dashboardPage(
                         # radioButtons("camhs_measure_type_prof", "Select measurement type:", 
                         #              choices = unique(master_loc_prof_df$measure_type),
                         #              selected = unique(master_loc_prof_df$measure_type)[1]),
-                        plotlyOutput("appt_prof_plot_camhs", height = "400px"))
+                        plotlyOutput("appt_prof_plot_camhs", height = "400px"),
+                        downloadButton("download_csv_camhs_appt_prof", "Download data", class = "btn-download"))
                   )
                 )
               )
@@ -464,7 +489,8 @@ ui <- dashboardPage(
                     radioButtons("camhs_measure_type_first_appt", "Select measurement type:", 
                                  choices = unique(master_appts_df$measure_type),
                                  selected = unique(master_appts_df$measure_type)[1]),
-                    plotlyOutput("first_appt_plot_camhs", height = "400px")),
+                    plotlyOutput("first_appt_plot_camhs", height = "400px"),
+                    downloadButton("download_csv_camhs_first_appt", "Download data", class = "btn-download")),
                 fluidRow(
                   box(title = "CAMHS First contact DNAs by SIMD", width = 12, 
                       status = "info", solidHeader = TRUE,
@@ -479,7 +505,8 @@ ui <- dashboardPage(
                       radioButtons("camhs_measure_type_first_appt_dna", "Select measurement type:", 
                                    choices = unique(first_con_dna_simd$measure_type),
                                    selected = unique(first_con_dna_simd$measure_type)[1]),
-                      plotlyOutput("first_appt_dna_camhs", height = "400px"))
+                      plotlyOutput("first_appt_dna_camhs", height = "400px"),
+                      downloadButton("download_csv_camhs_first_appt_dna", "Download data", class = "btn-download"))
                 )
               )
       ),

@@ -7,7 +7,7 @@
 
 #Script to create datatables for Shiny dashboard
 
-month_end <- "2025-07-01"
+month_end <- "2025-11-01"
 
 # source("./07_publication/script/chapters/2_load_functions.R")
 # source("./07_publication/script/chapters/3_set_constants.R")
